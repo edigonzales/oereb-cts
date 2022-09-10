@@ -15,7 +15,7 @@ import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class Probe implements IProbe {
+public abstract class Probe /*implements IProbe*/ {
     final Logger log = LoggerFactory.getLogger(Probe.class);
     
     protected String name;
@@ -63,18 +63,27 @@ public abstract class Probe implements IProbe {
         }
    
     }
+   
     
-    @Override
-    public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+    //User Schnittstelle
+    // ProbeVars...
+    
+    public void run() {
+        this.performRequest(description, null);
     }
-
-    @Override
-    public String getDescription() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    
+    
+//    @Override
+//    public String getName() {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+//
+//    @Override
+//    public String getDescription() {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
     
     // Entfernt doppelte Slashes
     public String fixUrl(String url) {
