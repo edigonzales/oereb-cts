@@ -1,6 +1,8 @@
 package ch.so.agi.oereb.cts.probe;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,11 +11,15 @@ import org.slf4j.LoggerFactory;
 public class GetEGRID /* extends? implements? */ {
     final Logger log = LoggerFactory.getLogger(GetEGRID.class);
 
-    private String requestTemplate = "";
+    private List<String> requestTemplate = List.of(
+            "/getegrid/xml/?EN=${EN}",
+            "/getegrid/xml/?IDENTDN=${IDENTDN}&NUMBER=${NUMBER}" 
+            );
     
     private String result;
     
-    public void run(String serviceEndpoint, HashMap<String,String> parameters) {
+    // Result Rückgabewert?
+    public void run(String serviceEndpoint, Map<String,String> parameters) {
         
         
         
