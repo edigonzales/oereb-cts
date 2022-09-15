@@ -1,5 +1,6 @@
 package ch.so.agi.oereb.cts;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -10,13 +11,41 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpClient.Version;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.StreamSupport;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
+import net.sf.saxon.s9api.DocumentBuilder;
+import net.sf.saxon.s9api.Processor;
+import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.s9api.WhitespaceStrippingPolicy;
+import net.sf.saxon.s9api.XPathCompiler;
+import net.sf.saxon.s9api.XPathSelector;
+import net.sf.saxon.s9api.XdmItem;
+import net.sf.saxon.s9api.XdmNode;
 
 
 
@@ -24,8 +53,10 @@ import org.slf4j.LoggerFactory;
 // falls nicht alle Parameter geliefert werden, wird diese Variante nicht ausgeführt.
 // Z.B. nicht alle negativen Tests testen, d.h. Koordinate ausserhalb für 204er
 
-public class GetEGRID /* extends? implements? */ {
+public class GetEGRID extends Probe {
     final Logger log = LoggerFactory.getLogger(GetEGRID.class);
+    
+    private static String FOLDER_PREFIX = "oerebcts";
 
     private List<String> requestTemplates = List.of(
             "/getegrid/xml/?EN=${EN}",
@@ -41,43 +72,50 @@ public class GetEGRID /* extends? implements? */ {
     private String result;
     
     // Result Rückgabewert?
-    public void run(String serviceEndpoint, Map<String,String> parameters) {
+    public List<Result> run(String serviceEndpoint, Map<String,String> parameters) throws IOException {
         
+        File workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
+        
+        List<Result> resultList = new ArrayList<Result>();
 
-        
-        
         for (var requestTemplate : requestTemplates) {
             var subsitutor = new StringSubstitutor(parameters);
+            subsitutor.setEnableUndefinedVariableException(true);
             String resolvedRequestTemplate = null;
             try {
                 resolvedRequestTemplate = subsitutor.replace(requestTemplate);
             } catch (IllegalArgumentException e) {
-                log.info("FUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+                // Es wurden keine passenden Parameter gefunden, um die Platzhalter zu ersetzen.
+                // In diesem Fall soll/kann die Prüfung nicht durchgeführt werden.
                 continue;
             }
-            subsitutor.setEnableUndefinedVariableException(true);
             log.info(resolvedRequestTemplate);
             
             try {
-                var requestUrl = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
-                requestUrl = fixUrl(requestUrl);
+                var requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
+                requestUrlString = fixUrl(requestUrlString);
                 
                 for (var queryParameter : queryParameters) {
-                    requestUrl += queryParameter;
-                    log.info(requestUrl);
-                    
+                    Result probeResult = new Result();
+                    probeResult.setClassName(this.getClass().getCanonicalName());
+                    probeResult.setServiceEndpoint(serviceEndpoint);
 
-                    var requestBuilder = HttpRequest.newBuilder();
-                    requestBuilder.GET().uri(URI.create(requestUrl));
+                    
+                    var requestUrl = requestUrlString + queryParameter;
+                    probeResult.setRequest(requestUrl);
 
-                    var request = requestBuilder.build();
-                    var httpClient = this.createHttpClient();
-                    var response = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream());
+                    var response = this.makeRequest(workFolder, requestUrl);
 
-                    log.info("status code:" + response.statusCode());
+                    this.validateStatusCode(response, probeResult);
+                    this.validateSchema(response, "oereb_v2_0/Extract.xsd", probeResult);
                     
+                    // Custom checks. Abhängig vom Input. Ohne User-Input Unterscheidung
+                    // nur mittels Query-Parameter möglich.
+                        
+                    // Prüfen, ob Geometrie vorhanden ist resp. nicht vorhanden sein darf.
+                    this.validateGeometryNodesCount(response, "//geom:coord", queryParameter, probeResult);
                     
-                    
+                    resultList.add(probeResult);
                 }
 
             } catch (UnsupportedEncodingException e) {
@@ -86,54 +124,12 @@ public class GetEGRID /* extends? implements? */ {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (SaxonApiException e) {
+                e.printStackTrace();
             }
 
         }
         
-        // Loop 1: Varianten
-        
-            // Loop 2: Query parameter
-                
-                // 1. make request
-                
-                
-                // 2. validate response code
-                
-                
-                // 3. validate schema
-                
-                
-                // 4. custom validations 
-        
-        
-    }
-    
-    // mutterklasse
-    private HttpClient createHttpClient() {
-        var httpClient = HttpClient.newBuilder()
-                .version(Version.HTTP_1_1)
-                .followRedirects(Redirect.ALWAYS)
-                .build();
-        return httpClient;
-    }
-    
-    // mutterklasse?
-    private void makeRequest() {
-        
-    }
-    
-    // mutterklasse?
-    private void validateSchema(String schema, String result) {
-        
-    }
-    
-    // mutterklasse?
-    private void validateResponseCode(String responseCode, String result) {
-        
-    }
-    
-    // Entfernt doppelte Slashes
-    private String fixUrl(String url) {
-        return url.replaceAll("(?<=[^:\\s])(\\/+\\/)", "/");
+        return resultList;
     }    
 }

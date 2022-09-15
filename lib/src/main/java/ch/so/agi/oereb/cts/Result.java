@@ -14,12 +14,16 @@ public class Result {
     
     protected String description;
 
+    protected String serviceEndpoint;
+
     protected boolean success = true;
     
     protected String message;
-    
+
     @JacksonXmlCData
     protected String request;
+    
+    protected Integer statusCode;
 
     @JacksonXmlElementWrapper(localName = "checkResults")
     @JacksonXmlProperty(localName = "check")
@@ -39,6 +43,14 @@ public class Result {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getServiceEndpoint() {
+        return serviceEndpoint;
+    }
+
+    public void setServiceEndpoint(String serviceEndpoint) {
+        this.serviceEndpoint = serviceEndpoint;
     }
 
     public boolean isSuccess() {
@@ -63,6 +75,14 @@ public class Result {
 
     public void setRequest(String request) {
         this.request = request;
+    }
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     public List<Result> getResults() {
