@@ -14,6 +14,13 @@ import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO:
+// Vielleicht kann man es doch wieder besser aufdrönseln, so im Sinne
+// ProbeWrapper und Probe. Der Wrapper ist für die Forschleife verantwortlich
+// und die - in diesem Fall - wohl eigentliche Konfiguration. DAmit der User
+// nicht 10000 Zeilen schreiben muss und etliche Kombis selber machen muss.
+
+
 public class GetExtractById extends Probe implements IProbe {
     final Logger log = LoggerFactory.getLogger(GetEGRID.class);
     
