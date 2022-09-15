@@ -53,7 +53,7 @@ import net.sf.saxon.s9api.XdmNode;
 // falls nicht alle Parameter geliefert werden, wird diese Variante nicht ausgeführt.
 // Z.B. nicht alle negativen Tests testen, d.h. Koordinate ausserhalb für 204er
 
-public class GetEGRID extends Probe {
+public class GetEGRID extends Probe implements IProbe {
     final Logger log = LoggerFactory.getLogger(GetEGRID.class);
     
     private static String FOLDER_PREFIX = "oerebcts";
@@ -69,10 +69,9 @@ public class GetEGRID extends Probe {
             "&GEOMETRY=false"
             );
         
+    @Override
     public List<Result> run(String serviceEndpoint, Map<String,String> parameters) throws IOException {
-        
         File workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
-        
         List<Result> resultList = new ArrayList<Result>();
 
         for (var requestTemplate : requestTemplates) {
