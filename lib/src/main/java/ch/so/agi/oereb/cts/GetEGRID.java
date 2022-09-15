@@ -68,10 +68,7 @@ public class GetEGRID extends Probe {
             "&GEOMETRY=true",
             "&GEOMETRY=false"
             );
-    
-    private String result;
-    
-    // Result Rückgabewert?
+        
     public List<Result> run(String serviceEndpoint, Map<String,String> parameters) throws IOException {
         
         File workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
@@ -100,7 +97,6 @@ public class GetEGRID extends Probe {
                     probeResult.setClassName(this.getClass().getCanonicalName());
                     probeResult.setServiceEndpoint(serviceEndpoint);
 
-                    
                     var requestUrl = requestUrlString + queryParameter;
                     probeResult.setRequest(requestUrl);
 
