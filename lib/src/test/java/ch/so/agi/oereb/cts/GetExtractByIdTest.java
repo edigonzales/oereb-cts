@@ -23,7 +23,7 @@ public class GetExtractByIdTest {
         {
             //var parameters = Map.of("EN","2600595,1215629","IDENTDN","SO0200002457","NUMBER","168");
             var parameters = Map.of("EGRID","CH807306583219");
-            var probe = new GetExtractById();
+            var probe = new GetExtractByIdWrapper();
             List<Result> result = probe.run("https://geo.so.ch/api/oereb/", parameters);
 
             String resultXml = xmlMapper.writeValueAsString(result);

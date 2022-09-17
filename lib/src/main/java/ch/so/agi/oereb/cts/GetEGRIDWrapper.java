@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -47,14 +48,8 @@ import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 
-
-
-// TODO:
-// falls nicht alle Parameter geliefert werden, wird diese Variante nicht ausgeführt.
-// Z.B. nicht alle negativen Tests testen, d.h. Koordinate ausserhalb für 204er
-
-public class GetEGRID extends Probe implements IProbe {
-    final Logger log = LoggerFactory.getLogger(GetEGRID.class);
+public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
+    final Logger log = LoggerFactory.getLogger(GetEGRIDWrapper.class);
     
     private static String FOLDER_PREFIX = "oerebcts";
 
@@ -69,9 +64,7 @@ public class GetEGRID extends Probe implements IProbe {
             "&GEOMETRY=false"
             );
         
-    @Override
     public List<Result> run(String serviceEndpoint, Map<String,String> parameters) throws IOException {
-        File workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
         List<Result> resultList = new ArrayList<Result>();
 
         for (var requestTemplate : requestTemplates) {
@@ -85,46 +78,27 @@ public class GetEGRID extends Probe implements IProbe {
                 // In diesem Fall soll/kann die Prüfung nicht durchgeführt werden.
                 continue;
             }
-            log.info(resolvedRequestTemplate);
             
             try {
                 var requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
                 requestUrlString = fixUrl(requestUrlString);
                 
-                for (var queryParameter : queryParameters) {
-                    Result probeResult = new Result();
-                    probeResult.setClassName(this.getClass().getCanonicalName());
-                    probeResult.setServiceEndpoint(serviceEndpoint);
+                for (var queryParameter : queryParameters) { 
+                    var requestUrl = URI.create(requestUrlString + queryParameter);
+                    var serviceEndpointUrl = URI.create(serviceEndpoint);
 
-                    var requestUrl = requestUrlString + queryParameter;
-                    probeResult.setRequest(requestUrl);
-
-                    var response = this.makeRequest(workFolder, requestUrl);
-
-                    this.validateStatusCode(response, probeResult);
-                    this.validateSchema(response, "oereb_v2_0/Extract.xsd", probeResult);
-                    
-                    // Custom checks. Abhängig vom Input. Ohne User-Input Unterscheidung
-                    // nur mittels Query-Parameter möglich.
-                        
-                    // Prüfen, ob Geometrie vorhanden ist resp. nicht vorhanden sein darf.
-                    this.validateGeometryNodesCount(response, "//geom:coord", queryParameter, probeResult);
+                    var probe = new GetEGRIDProbe();
+                    var probeResult = probe.run(serviceEndpointUrl, requestUrl, queryParameter);
                     
                     resultList.add(probeResult);
                 }
-
             } catch (UnsupportedEncodingException e) {
                 // TODO result...
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (SaxonApiException e) {
-                e.printStackTrace();
-            }
-
+            } 
         }
-        
         return resultList;
     }    
 }

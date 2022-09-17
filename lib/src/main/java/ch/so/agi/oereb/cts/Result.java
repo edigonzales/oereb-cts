@@ -1,5 +1,6 @@
 package ch.so.agi.oereb.cts;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,14 +15,13 @@ public class Result {
     
     protected String description;
 
-    protected String serviceEndpoint;
+    protected URI serviceEndpoint;
 
     protected boolean success = true;
     
     protected String message;
 
-    @JacksonXmlCData
-    protected String request;
+    protected URI request;
     
     protected Integer statusCode;
 
@@ -45,11 +45,11 @@ public class Result {
         this.description = description;
     }
 
-    public String getServiceEndpoint() {
+    public URI getServiceEndpoint() {
         return serviceEndpoint;
     }
 
-    public void setServiceEndpoint(String serviceEndpoint) {
+    public void setServiceEndpoint(URI serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
     }
 
@@ -69,11 +69,11 @@ public class Result {
         this.message = message;
     }
 
-    public String getRequest() {
+    public URI getRequest() {
         return request;
     }
 
-    public void setRequest(String request) {
+    public void setRequest(URI request) {
         this.request = request;
     }
 

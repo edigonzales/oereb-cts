@@ -2,6 +2,8 @@ package ch.so.agi.oereb.cts;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -14,15 +16,8 @@ import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO:
-// Vielleicht kann man es doch wieder besser aufdrönseln, so im Sinne
-// ProbeWrapper und Probe. Der Wrapper ist für die Forschleife verantwortlich
-// und die - in diesem Fall - wohl eigentliche Konfiguration. DAmit der User
-// nicht 10000 Zeilen schreiben muss und etliche Kombis selber machen muss.
-
-
-public class GetExtractById extends Probe implements IProbe {
-    final Logger log = LoggerFactory.getLogger(GetEGRID.class);
+public class GetExtractByIdWrapper extends Probe /*implements IProbe */ {
+    final Logger log = LoggerFactory.getLogger(GetEGRIDWrapper.class);
     
     private static String FOLDER_PREFIX = "oerebcts";
 
@@ -39,9 +34,7 @@ public class GetExtractById extends Probe implements IProbe {
             "&WITHIMAGES=false"
             );
 
-    @Override
     public List<Result> run(String serviceEndpoint, Map<String, String> parameters) throws IOException {
-        File workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
         List<Result> resultList = new ArrayList<Result>();
 
         for (var requestTemplate : requestTemplates) {
@@ -51,29 +44,31 @@ public class GetExtractById extends Probe implements IProbe {
             try {
                 resolvedRequestTemplate = subsitutor.replace(requestTemplate);
             } catch (IllegalArgumentException e) {
-                // Es wurden keine passenden Parameter gefunden, um die Platzhalter zu ersetzen.
-                // In diesem Fall soll/kann die Prüfung nicht durchgeführt werden.
                 continue;
             }
-            log.info(resolvedRequestTemplate);
 
-            var requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
-            requestUrlString = fixUrl(requestUrlString);
-            
-            for (var queryParameter : queryParameters) {
-                Result probeResult = new Result();
-                probeResult.setClassName(this.getClass().getCanonicalName());
-                probeResult.setServiceEndpoint(serviceEndpoint);
-
-                var requestUrl = requestUrlString + queryParameter;
-                probeResult.setRequest(requestUrl);
-
-                log.info(requestUrl);
-            }
+            try {
+                var requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
+                requestUrlString = fixUrl(requestUrlString);
+                
+                for (var queryParameter : queryParameters) { 
+                    var requestUrl = URI.create(requestUrlString + queryParameter);
+                    var serviceEndpointUrl = URI.create(serviceEndpoint);
+                    
+                    var probe = new GetExtractByIdProbe();
+                    var probeResult = probe.run(serviceEndpointUrl, requestUrl, queryParameter);
+                    
+                    resultList.add(probeResult);
+                }
+            } catch (UnsupportedEncodingException e) {
+                // TODO result...
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } 
         }
         
-        
-        return null;
+        return resultList;
         
         // check: content-type der http-response
     }
