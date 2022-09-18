@@ -119,6 +119,9 @@ public abstract class Probe {
     }    
 
     // TODO:
+    // queryParameter ersetzen mit requestUrl. Die steckt aber bereits in response, oder?
+    
+    // TODO:
     // Das reicht im Prinzip schon nicht ganz:
     // Es sollte geprüft werdne, ob alle Elemente, die eine Geometrie haben sollten, auch eine Geometrie haben.
     // Name: validateGeometryNodeExistence ?
