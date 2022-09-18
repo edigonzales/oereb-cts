@@ -35,6 +35,8 @@ public class Result {
     protected Instant endTime;
 
     protected double processingTimeSecs = -1;
+    
+    protected String resultFileLocation;
 
     @JacksonXmlElementWrapper(localName = "checkResults")
     @JacksonXmlProperty(localName = "check")
@@ -122,6 +124,14 @@ public class Result {
 
     public void setProcessingTimeSecs(double processingTimeSecs) {
         this.processingTimeSecs = processingTimeSecs;
+    }
+
+    public String getResultFileLocation() {
+        return resultFileLocation;
+    }
+
+    public void setResultFileLocation(String resultFileLocation) {
+        this.resultFileLocation = resultFileLocation;
     }
 
     public List<Result> getResults() {

@@ -6,5 +6,5 @@
 
 
 ## todo
-- Zeit messen.
+- ~~Zeit messen~~
 - XML-Response wegkopieren

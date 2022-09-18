@@ -15,7 +15,7 @@ public class GetEGRIDProbe extends Probe implements IProbe {
     final Logger log = LoggerFactory.getLogger(GetEGRIDWrapper.class);
 
     @Override
-    public Result run(URI serviceEndpoint, URI requestUrl, String queryParameter) throws IOException {
+    public Result run(URI serviceEndpoint, URI requestUrl) throws IOException {
         File workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
 
         Result probeResult = new Result();
@@ -38,7 +38,7 @@ public class GetEGRIDProbe extends Probe implements IProbe {
 
             {
                 // Prüfen, ob Geometrie vorhanden ist resp. nicht vorhanden sein darf.
-                var result = this.validateGeometryNodesCount(response, "count(//geom:coord)", queryParameter);
+                var result = this.validateGeometryNodesCount(response, "count(//geom:coord)");
                 probeResult.addResult(result);
             } 
         } catch (InterruptedException e) { // TODO!!!

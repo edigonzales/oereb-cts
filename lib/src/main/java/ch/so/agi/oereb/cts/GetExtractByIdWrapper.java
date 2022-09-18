@@ -23,7 +23,8 @@ public class GetExtractByIdWrapper extends Probe /*implements IProbe */ {
 
     private List<String> requestTemplates = List.of(
             "/extract/xml/?EGRID=${EGRID}",
-            "/extract/xml/?IDENTDN=${IDENTDN}&NUMBER=${NUMBER}" 
+            "/extract/xml/?IDENTDN=${IDENTDN}&NUMBER=${NUMBER}",
+            "/extract/url/?EGRID=${EGRID}"
             );
     
     private List<String> queryParameters = List.of(
@@ -55,8 +56,12 @@ public class GetExtractByIdWrapper extends Probe /*implements IProbe */ {
                     var requestUrl = URI.create(requestUrlString + queryParameter);
                     var serviceEndpointUrl = URI.create(serviceEndpoint);
                     
+                    if (requestUrl.toString().contains("/url/") && (requestUrl.toString().contains("GEOMETRY") || requestUrl.toString().contains("WITHIMAGES"))) {
+                        continue;
+                    }
+
                     var probe = new GetExtractByIdProbe();
-                    var probeResult = probe.run(serviceEndpointUrl, requestUrl, queryParameter);
+                    var probeResult = probe.run(serviceEndpointUrl, requestUrl);
                     
                     resultList.add(probeResult);
                 }

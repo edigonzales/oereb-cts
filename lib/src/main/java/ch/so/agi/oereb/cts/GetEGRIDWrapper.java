@@ -55,7 +55,7 @@ public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
 
     private List<String> requestTemplates = List.of(
             "/getegrid/xml/?EN=${EN}",
-            "/getegrid/xml/?IDENTDN=${IDENTDN}&NUMBER=${NUMBER}" 
+            "/getegrid/xml/?IDENTDN=${IDENTDN}&NUMBER=${NUMBER}"
             );
     
     private List<String> queryParameters = List.of(
@@ -88,7 +88,7 @@ public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
                     var serviceEndpointUrl = URI.create(serviceEndpoint);
 
                     var probe = new GetEGRIDProbe();
-                    var probeResult = probe.run(serviceEndpointUrl, requestUrl, queryParameter);
+                    var probeResult = probe.run(serviceEndpointUrl, requestUrl);
                     
                     resultList.add(probeResult);
                 }

@@ -4,5 +4,5 @@ import java.io.IOException;
 import java.net.URI;
 
 public interface IProbe {
-    public Result run(URI serviceEndpoint, URI requestUrl, String queryParameter) throws IOException;
+    public Result run(URI serviceEndpoint, URI requestUrl) throws IOException;
 }

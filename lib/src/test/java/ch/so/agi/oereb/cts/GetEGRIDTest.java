@@ -23,8 +23,8 @@ public class GetEGRIDTest {
         {
             //var parameters = Map.of("EN","2600595,1215629","IDENTDN","SO0200002457","NUMBER","168");
             var parameters = Map.of("EN","2600595,1215629");
-            var probe = new GetEGRIDWrapper();
-            List<Result> result = probe.run("https://geo.so.ch/api/oereb/", parameters);
+            var wrapper = new GetEGRIDWrapper();
+            List<Result> result = wrapper.run("https://geo.so.ch/api/oereb/", parameters);
 
             String resultXml = xmlMapper.writeValueAsString(result);
             System.out.println(resultXml);
@@ -33,8 +33,8 @@ public class GetEGRIDTest {
 //        {
 //            //var parameters = Map.of("EN","2694124,1180546","IDENTDN","UR0200001216","NUMBER","112");
 //            var parameters = Map.of("EN","2694124,1180546");
-//            var probe = new GetEGRIDWrapper();
-//            List<Result> result = probe.run("https://prozessor-oereb.ur.ch/oereb/", parameters);
+//            var wrapper = new GetEGRIDWrapper();
+//            List<Result> result = wrapper.run("https://prozessor-oereb.ur.ch/oereb/", parameters);
 //            
 //            String resultXml = xmlMapper.writeValueAsString(result);
 //            System.out.println(resultXml);
