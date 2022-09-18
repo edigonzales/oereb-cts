@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
 
 import net.sf.saxon.s9api.SaxonApiException;
 
@@ -20,7 +21,7 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
         probeResult.setRequest(requestUrl);
         
         try {
-            var response = this.makeRequest(workFolder, requestUrl);
+            var response = this.makeRequest(workFolder, requestUrl, probeResult);
 
             {
                 var result = this.validateStatusCode(response);
@@ -28,20 +29,20 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
             } 
             
             {
-                var result = this.validateSchema(response, "oereb_v2_0/ExtractData.xsd");
+                var result = this.validateSchema(response, "oereb_v2_0/Extract.xsd");
                 probeResult.addResult(result);
+
             }
 
             {
-                // Prüfen, ob Geometrie vorhanden ist resp. nicht vorhanden sein darf.
-//                var result = this.validateGeometryNodesCount(response, "count(//geom:coord)", queryParameter);
-//                probeResult.addResult(result);
+                var result = this.validateGeometryNodesCount(response, "count(//data:RestrictionOnLandownership/data:Geometry/data:Surface/geom:exterior/geom:polyline/geom:coord)", queryParameter);
+                probeResult.addResult(result);
             } 
         } catch (InterruptedException e) { // TODO!!!
             e.printStackTrace();
-        } /*catch (SaxonApiException e) { // TODO!!!
+        } catch (SaxonApiException e) { // TODO!!!
             e.printStackTrace();
-        } */
+        } 
 
         
         return probeResult;

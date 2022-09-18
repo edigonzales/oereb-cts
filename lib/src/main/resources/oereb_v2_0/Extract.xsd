@@ -8,6 +8,7 @@
   elementFormDefault="qualified" attributeFormDefault="unqualified"
   version="2.0.0"
 >
+
   <xsd:import namespace="http://www.interlis.ch/geometry/1.0" 
     schemaLocation="geometry.xsd"/>
   <xsd:import namespace=

@@ -24,7 +24,7 @@ public class GetEGRIDProbe extends Probe implements IProbe {
         probeResult.setRequest(requestUrl);
         
         try {
-            var response = this.makeRequest(workFolder, requestUrl);
+            var response = this.makeRequest(workFolder, requestUrl, probeResult);
 
             {
                 var result = this.validateStatusCode(response);

@@ -26,9 +26,19 @@ public class GetExtractByIdTest {
             var probe = new GetExtractByIdWrapper();
             List<Result> result = probe.run("https://geo.so.ch/api/oereb/", parameters);
 
-            String resultXml = xmlMapper.writeValueAsString(result);
+            var resultXml = xmlMapper.writeValueAsString(result);
             System.out.println(resultXml);
         }
+        
+//        {
+//            var parameters = Map.of("EGRID","CH427890824980");
+//            var probe = new GetExtractByIdWrapper();
+//            List<Result> result = probe.run("https://oereb.geo.bl.ch/", parameters);
+//
+//            var resultXml = xmlMapper.writeValueAsString(result);
+//            System.out.println(resultXml);
+//        }
+        
         
 //        {
 //            //var parameters = Map.of("EN","2694124,1180546","IDENTDN","UR0200001216","NUMBER","112");

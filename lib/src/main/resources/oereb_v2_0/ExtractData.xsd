@@ -4,10 +4,11 @@
   xmlns:geo="http://www.interlis.ch/geometry/1.0" xmlns:xmlsig="http://www.w3.org/2000/09/xmldsig#"
   targetNamespace="http://schemas.geo.admin.ch/V_D/OeREB/2.0/ExtractData"
   elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.1">
+
   <xsd:import namespace="http://www.interlis.ch/geometry/1.0" 
-    schemaLocation="http://models.interlis.ch/refhb24/geometry.xsd"/>
+    schemaLocation="geometry.xsd"/>
   <xsd:import namespace="http://www.w3.org/2000/09/xmldsig#"
-    schemaLocation="http://www.w3.org/TR/xmldsig-core/xmldsig-core-schema.xsd"/>
+    schemaLocation="xmldsig-core-schema.xsd"/>
 
   <xsd:element name="extensions">
     <xsd:complexType>

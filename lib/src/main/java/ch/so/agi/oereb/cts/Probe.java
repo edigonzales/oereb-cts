@@ -11,6 +11,7 @@ import java.net.http.HttpClient.Version;
 import java.net.http.HttpHeaders;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -50,11 +51,13 @@ public abstract class Probe {
         result.setClassName("StatusCode");
         result.setDescription("Checks the returned http status code.");
         result.setStatusCode(statusCode);
+        result.start();
 
         if (statusCode != 200 && statusCode != 204 && statusCode != 500) {
             result.setSuccess(false);
             result.setMessage("Returned status code does not match expected status code (200, 204, 500).");
         } 
+        result.stop();
         return result;
     }
 
@@ -62,7 +65,8 @@ public abstract class Probe {
         var result = new Result();
         result.setClassName("SchemaValidation");
         result.setDescription("Validates the returned xml against the corresponding xml schema.");
-
+        result.start();
+        
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
@@ -95,6 +99,7 @@ public abstract class Probe {
             
             if (exceptions.size() == 0) {
                 result.setSuccess(true);
+                result.stop();
                 return result;
             }
 
@@ -109,16 +114,18 @@ public abstract class Probe {
             result.setSuccess(false);
             result.setMessage(e.getMessage());
         }
+        result.stop();
         return result;
     }    
 
     protected Result validateGeometryNodesCount(HttpResponse<Path> response, String expression, String queryParameter) throws SaxonApiException {
-        int count = countGeometryNodes(response, expression);
+        int count = countNodes(response, expression);
 
         Result result = new Result();
         result.setClassName("GeometryExistence");
         result.setDescription("Checks if the returned xml document has geometry elements(s) or is not allowed to have geometry elements based on the request parameters.");
-
+        result.start();
+        
         if (queryParameter.contains("GEOMETRY=true")) {
             if (count == 0) {
                 result.setSuccess(false);
@@ -130,13 +137,16 @@ public abstract class Probe {
                 result.setMessage("Response has superfluos geometry element(s).");
             }
         }
+        result.stop();
         return result;
     }
     
-    private int countGeometryNodes(HttpResponse<Path> response, String expression) throws SaxonApiException {
+    private int countNodes(HttpResponse<Path> response, String expression) throws SaxonApiException {
         Processor proc = new Processor(false);
         XPathCompiler xpath = proc.newXPathCompiler();
         xpath.declareNamespace("geom", "http://www.interlis.ch/geometry/1.0");
+        xpath.declareNamespace("extract", "http://schemas.geo.admin.ch/V_D/OeREB/2.0/Extract");
+        xpath.declareNamespace("data", "http://schemas.geo.admin.ch/V_D/OeREB/2.0/ExtractData");
 
         DocumentBuilder builder = proc.newDocumentBuilder();
         builder.setLineNumbering(true);
@@ -146,7 +156,7 @@ public abstract class Probe {
         XPathSelector selector = xpath.compile(expression).load();
         selector.setContextItem(responseDoc);
         
-        int count = Integer.valueOf(selector.evaluateSingle().getStringValue());        
+        int count = Integer.valueOf(selector.evaluateSingle().getStringValue());
         return count;
     }
 
@@ -172,7 +182,7 @@ public abstract class Probe {
         return httpClient;
     }
 
-    protected HttpResponse<Path> makeRequest(File workFolder, URI requestUrl) throws IOException, InterruptedException {
+    protected HttpResponse<Path> makeRequest(File workFolder, URI requestUrl, Result result) throws IOException, InterruptedException {
         var requestBuilder = HttpRequest.newBuilder();
         requestBuilder.GET().header("accept", "application/xml").uri(requestUrl);
         // TODO: Wir haben bei uns ein leicht unterschiedliches Verhalten zwischen GetEGRID und
@@ -182,9 +192,12 @@ public abstract class Probe {
         var httpClient = this.createHttpClient();
         
         var fileName = createFileName(requestUrl);
-        var responseFile = Paths.get(workFolder.getAbsolutePath(), fileName);
+        var responseFile = Paths.get(workFolder.getAbsolutePath(), fileName);      
+        
+        result.start();
         var response = httpClient.send(request, HttpResponse.BodyHandlers.ofFile(responseFile));
-
+        result.stop();
+        
         return response;
     }    
         

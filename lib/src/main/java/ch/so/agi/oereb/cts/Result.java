@@ -1,9 +1,12 @@
 package ch.so.agi.oereb.cts;
 
 import java.net.URI;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
@@ -24,6 +27,14 @@ public class Result {
     protected URI request;
     
     protected Integer statusCode;
+    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    protected Instant startTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    protected Instant endTime;
+
+    protected double processingTimeSecs = -1;
 
     @JacksonXmlElementWrapper(localName = "checkResults")
     @JacksonXmlProperty(localName = "check")
@@ -85,6 +96,34 @@ public class Result {
         this.statusCode = statusCode;
     }
 
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
+    }
+    
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
+    }
+
+    public double getProcessingTimeSecs() {
+        return processingTimeSecs;
+    }
+
+    public void setProcessingTimeSecs(double processingTimeSecs) {
+        this.processingTimeSecs = processingTimeSecs;
+    }
+
     public List<Result> getResults() {
         return results;
     }
@@ -102,4 +141,15 @@ public class Result {
             //this.message = this.resultsFailed.get(0).getMessage();
         } 
     }
+    
+    public void start() {
+        this.startTime = Instant.now();
+    }
+    
+    public void stop() {
+        this.endTime = Instant.now();
+        
+        this.processingTimeSecs = Duration.between(startTime, endTime).toMillis() / 1000.0;
+    }    
+
 }
