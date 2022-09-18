@@ -121,6 +121,7 @@ public abstract class Probe {
     // TODO:
     // Das reicht im Prinzip schon nicht ganz:
     // Es sollte geprüft werdne, ob alle Elemente, die eine Geometrie haben sollten, auch eine Geometrie haben.
+    // Name: validateGeometryNodeExistence ?
     protected Result validateGeometryNodesCount(HttpResponse<Path> response, String expression, String queryParameter) throws SaxonApiException {
         Result result = new Result();
         result.setClassName("GeometryExistence");

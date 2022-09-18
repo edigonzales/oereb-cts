@@ -28,6 +28,10 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
                 probeResult.addResult(result);
             } 
             
+            // TODO
+            // validate response content type
+            
+            
             {
                 var result = this.validateSchema(response, "oereb_v2_0/Extract.xsd");
                 probeResult.addResult(result);
