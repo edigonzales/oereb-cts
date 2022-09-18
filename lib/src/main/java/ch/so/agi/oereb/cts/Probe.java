@@ -118,13 +118,16 @@ public abstract class Probe {
         return result;
     }    
 
+    // TODO:
+    // Das reicht im Prinzip schon nicht ganz:
+    // Es sollte geprüft werdne, ob alle Elemente, die eine Geometrie haben sollten, auch eine Geometrie haben.
     protected Result validateGeometryNodesCount(HttpResponse<Path> response, String expression, String queryParameter) throws SaxonApiException {
-        int count = countNodes(response, expression);
-
         Result result = new Result();
         result.setClassName("GeometryExistence");
         result.setDescription("Checks if the returned xml document has geometry elements(s) or is not allowed to have geometry elements based on the request parameters.");
         result.start();
+
+        int count = countNodes(response, expression);
         
         if (queryParameter.contains("GEOMETRY=true")) {
             if (count == 0) {

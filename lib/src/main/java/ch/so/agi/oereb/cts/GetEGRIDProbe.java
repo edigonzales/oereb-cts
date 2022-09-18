@@ -36,9 +36,6 @@ public class GetEGRIDProbe extends Probe implements IProbe {
                 probeResult.addResult(result);
             }
 
-            // Custom checks. Abhängig vom Input. Ohne User-Input Unterscheidung
-            // nur mittels Query-Parameter möglich.
-
             {
                 // Prüfen, ob Geometrie vorhanden ist resp. nicht vorhanden sein darf.
                 var result = this.validateGeometryNodesCount(response, "count(//geom:coord)", queryParameter);
