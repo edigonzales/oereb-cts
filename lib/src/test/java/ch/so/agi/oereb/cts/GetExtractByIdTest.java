@@ -41,10 +41,8 @@ public class GetExtractByIdTest {
                 var resultXml = xmlMapper.writeValueAsString(result);
                 System.out.println(resultXml);
             }
-
         }
-//        
-//        
+      
 //        {
 //            //var parameters = Map.of("EN","2694124,1180546","IDENTDN","UR0200001216","NUMBER","112");
 //            var parameters = Map.of("EGRID","CH727993074655");
@@ -63,10 +61,5 @@ public class GetExtractByIdTest {
 //            String resultXml = xmlMapper.writeValueAsString(result);
 //            System.out.println(resultXml);
 //        }
-        
-        
-        
-        
-        
     }
 }
