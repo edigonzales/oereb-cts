@@ -64,8 +64,8 @@ public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
             "&GEOMETRY=false"
             );
         
-    public Results run(String serviceEndpoint, Map<String,String> parameters) throws IOException {
-        Results results = new Results();
+    public List<Result> run(String serviceEndpoint, Map<String,String> parameters) throws IOException {
+        List<Result> resultList = new ArrayList<Result>();
 
         for (var requestTemplate : requestTemplates) {
             var subsitutor = new StringSubstitutor(parameters);
@@ -90,7 +90,7 @@ public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
                     var probe = new GetEGRIDProbe();
                     var probeResult = probe.run(serviceEndpointUrl, requestUrl);
                     
-                    results.addResult(probeResult);
+                    resultList.add(probeResult);
                 }
             } catch (UnsupportedEncodingException e) {
                 // TODO result...
@@ -99,6 +99,6 @@ public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
                 e.printStackTrace();
             } 
         }
-        return results;
+        return resultList;
     }    
 }

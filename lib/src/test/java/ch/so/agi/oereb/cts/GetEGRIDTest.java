@@ -24,9 +24,9 @@ public class GetEGRIDTest {
             //var parameters = Map.of("EN","2600595,1215629","IDENTDN","SO0200002457","NUMBER","168");
             var parameters = Map.of("EN","2600595,1215629");
             var wrapper = new GetEGRIDWrapper();
-            Results results = wrapper.run("https://geo.so.ch/api/oereb/", parameters);
+            List<Result> result = wrapper.run("https://geo.so.ch/api/oereb/", parameters);
 
-            String resultXml = xmlMapper.writeValueAsString(results);
+            String resultXml = xmlMapper.writeValueAsString(result);
             System.out.println(resultXml);
         }
         

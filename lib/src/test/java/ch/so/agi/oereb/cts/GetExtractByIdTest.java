@@ -24,10 +24,12 @@ public class GetExtractByIdTest {
             //var parameters = Map.of("EN","2600595,1215629","IDENTDN","SO0200002457","NUMBER","168");
             var parameters = Map.of("EGRID","CH807306583219");
             var wrapper = new GetExtractByIdWrapper();
-            Results results = wrapper.run("https://geo.so.ch/api/oereb/", parameters);
+            List<Result> results = wrapper.run("https://geo.so.ch/api/oereb/", parameters);
 
-            var resultXml = xmlMapper.writeValueAsString(results);
-            System.out.println(resultXml);
+            for (Result result : results) {
+                var resultXml = xmlMapper.writeValueAsString(result);
+                System.out.println(resultXml);
+            }
         }
         
 //        {
