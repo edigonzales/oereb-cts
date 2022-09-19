@@ -35,8 +35,8 @@ public class GetExtractByIdWrapper extends Probe /*implements IProbe */ {
             "&WITHIMAGES=false"
             );
 
-    public List<Result> run(String serviceEndpoint, Map<String, String> parameters) throws IOException {
-        List<Result> resultList = new ArrayList<Result>();
+    public Results run(String serviceEndpoint, Map<String, String> parameters) throws IOException {
+        Results results = new Results();
 
         for (var requestTemplate : requestTemplates) {
             var subsitutor = new StringSubstitutor(parameters);
@@ -63,7 +63,7 @@ public class GetExtractByIdWrapper extends Probe /*implements IProbe */ {
                     var probe = new GetExtractByIdProbe();
                     var probeResult = probe.run(serviceEndpointUrl, requestUrl);
                     
-                    resultList.add(probeResult);
+                    results.addResult(probeResult);
                 }
             } catch (UnsupportedEncodingException e) {
                 // TODO result...
@@ -73,7 +73,7 @@ public class GetExtractByIdWrapper extends Probe /*implements IProbe */ {
             } 
         }
         
-        return resultList;
+        return results;
         
         // check: content-type der http-response
     }

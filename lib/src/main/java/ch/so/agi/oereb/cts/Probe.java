@@ -82,18 +82,18 @@ public abstract class Probe {
                     result.setSuccess(true);
                 } else {
                     result.setSuccess(false);
-                    result.setMessage("Content-Type must be 'application/pdf'. Response Content-Type is '" + contentType + "'.");
+                    result.setMessage("Response Content-Type must be 'application/pdf'. Response Content-Type is '" + contentType + "'.");
                 }
             } else if (requestUrl.contains("/xml/")) {
                 if (contentType.equalsIgnoreCase("application/xml")) {
                     result.setSuccess(true);
                 } else {
                     result.setSuccess(false);
-                    result.setMessage("Content-Type must be 'application/xml'. Response Content-Type is '" + contentType + "'.");
+                    result.setMessage("Response Content-Type must be 'application/xml'. Response Content-Type is '" + contentType + "'.");
                 }
             } else {
                 result.setSuccess(false);
-                result.setMessage("Content-Type '" + contentType + "' is not allowed.");
+                result.setMessage("Response Content-Type '" + contentType + "' is not allowed.");
             }
             
         } catch (Exception e) {
