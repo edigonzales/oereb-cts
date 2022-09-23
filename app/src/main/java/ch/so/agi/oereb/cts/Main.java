@@ -101,17 +101,10 @@ public class Main {
                 xsw.writeStartElement("results");
 
                 for (Result result : results) {
-                    var resultXml = xmlMapper.writeValueAsString(result);
-                    
-                    
-                    //var themePub = themePublicationsIterator.next();
                     xmlMapper.writeValue(xsw, result);
                     
                     String fileName = new File(result.getResultFileLocation()).getName();
-                    // TODO: copy file to output dir.
                     Files.copy(Path.of(result.getResultFileLocation()), Path.of(outDirectory, fileName), StandardCopyOption.REPLACE_EXISTING);
-                    //result.getResultFileLocation()
-
                 }
 
                 xsw.writeEndElement();
