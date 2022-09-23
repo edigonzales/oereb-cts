@@ -6,13 +6,15 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+//import com.fasterxml.jackson.annotation.JsonFormat;
+//import com.fasterxml.jackson.annotation.JsonInclude;
+//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
+//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+//import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+//@JsonInclude(JsonInclude.Include.NON_EMPTY)
+//@JacksonXmlRootElement(localName = "result")
 public class Result {
     protected String className; 
     
@@ -28,18 +30,18 @@ public class Result {
     
     protected Integer statusCode;
     
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     protected Instant startTime;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     protected Instant endTime;
 
     protected double processingTimeSecs = -1;
     
     protected String resultFileLocation;
 
-    @JacksonXmlElementWrapper(localName = "checkResults")
-    @JacksonXmlProperty(localName = "check")
+//    @JacksonXmlElementWrapper(localName = "checkResults")
+//    @JacksonXmlProperty(localName = "check")
     protected List<Result> results = new ArrayList<Result>();
 
     public String getClassName() {
@@ -160,6 +162,15 @@ public class Result {
         this.endTime = Instant.now();
         
         this.processingTimeSecs = Duration.between(startTime, endTime).toMillis() / 1000.0;
+    }
+
+    @Override
+    public String toString() {
+        return "Result [className=" + className + ", description=" + description + ", serviceEndpoint="
+                + serviceEndpoint + ", success=" + success + ", message=" + message + ", request=" + request
+                + ", statusCode=" + statusCode + ", startTime=" + startTime + ", endTime=" + endTime
+                + ", processingTimeSecs=" + processingTimeSecs + ", resultFileLocation=" + resultFileLocation
+                + ", results=" + results + "]";
     }    
 
 }

@@ -3,22 +3,12 @@ package ch.so.agi.oereb.cts;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class GetExtractByIdTest {
     @Test
     public void foo() throws IOException {
-        XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        xmlMapper.registerModule(new JavaTimeModule());
-        xmlMapper.setTimeZone(TimeZone.getTimeZone("Europe/Zurich"));
-        xmlMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         {
             //var parameters = Map.of("EN","2600595,1215629","IDENTDN","SO0200002457","NUMBER","168");
@@ -27,8 +17,7 @@ public class GetExtractByIdTest {
             List<Result> results = wrapper.run("https://geo.so.ch/api/oereb/", parameters);
 
             for (Result result : results) {
-                var resultXml = xmlMapper.writeValueAsString(result);
-                System.out.println(resultXml);
+                System.out.println(result);
             }
         }
         
@@ -38,8 +27,8 @@ public class GetExtractByIdTest {
             List<Result> results = wrapper.run("https://oereb.geo.bl.ch/", parameters);
 
             for (Result result : results) {
-                var resultXml = xmlMapper.writeValueAsString(result);
-                System.out.println(resultXml);
+                //var resultXml = xmlMapper.writeValueAsString(result);
+                System.out.println(result);
             }
         }
       
