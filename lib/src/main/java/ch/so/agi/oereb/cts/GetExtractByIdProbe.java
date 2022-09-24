@@ -1,11 +1,9 @@
 package ch.so.agi.oereb.cts;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Instant;
 
 import net.sf.saxon.s9api.SaxonApiException;
 
@@ -13,9 +11,9 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
 
     @Override
     public Result run(URI serviceEndpoint, URI requestUrl) throws IOException {
-        File workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
+        var workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
 
-        Result probeResult = new Result();
+        var probeResult = new Result();
         probeResult.setClassName(this.getClass().getCanonicalName());
         probeResult.setServiceEndpoint(serviceEndpoint);
         probeResult.setRequest(requestUrl);

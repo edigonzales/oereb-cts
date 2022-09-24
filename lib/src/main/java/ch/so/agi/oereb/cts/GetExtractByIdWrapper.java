@@ -1,13 +1,10 @@
 package ch.so.agi.oereb.cts;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 public class GetExtractByIdWrapper extends Probe /*implements IProbe */ {
     final Logger log = LoggerFactory.getLogger(GetEGRIDWrapper.class);
-    
-    private static String FOLDER_PREFIX = "oerebcts";
 
     private List<String> requestTemplates = List.of(
             "/extract/xml/?EGRID=${EGRID}",

@@ -350,7 +350,7 @@ public abstract class Probe {
         // GetExtract. Beim Extract muss man den Accept-Header setzen. Siehe Controller im Code.
 
         var request = requestBuilder.build();
-        var httpClient = this.createHttpClient();
+        var httpClient = createHttpClient();
         
         var fileName = createFileName(requestUrl);
         var responseFile = Paths.get(workFolder.getAbsolutePath(), fileName);      

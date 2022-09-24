@@ -3,7 +3,6 @@ package ch.so.agi.oereb.cts;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.junit.jupiter.api.Test;
 
