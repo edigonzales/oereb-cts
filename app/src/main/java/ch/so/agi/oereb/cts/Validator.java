@@ -44,8 +44,10 @@ public class Validator {
         var configFile = new File(config);
         var ini = new Ini(configFile);
        
+        var results = new ArrayList<Result>();
+
         var iniSet = ini.entrySet();    // Exception    
-        for (var sectionMap : iniSet) {            
+        for (var sectionMap : iniSet) {   
             var section = sectionMap.getValue();
             var serviceEndpoint = section.get("SERVICE_ENDPOINT");
             
@@ -71,8 +73,8 @@ public class Validator {
                 throw new IllegalArgumentException("No test parameters defined.");
             }
 
-            var results = new ArrayList<Result>();
-            
+            log.info("Validating service endpoint: " + serviceEndpoint + " ("+sectionMap.getKey()+")");
+                        
             {
                 var wrapper = new GetEGRIDWrapper();
                 var probeResults = wrapper.run(serviceEndpoint, params);
