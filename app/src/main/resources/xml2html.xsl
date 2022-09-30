@@ -5,7 +5,7 @@
         <html>
         <head>
             <title>ÖREB Complience Test Suite</title>
-            <meta name="description" content="ÖREB Complience Test Suite"/>
+            <meta name="description" content="ÖREB Compliance Test Suite"/>
             <meta name="keywords" content="ÖREB, Compliance, Test, Suite, CTS, Solothurn, AGI, SOGIS"/>
             <meta name="author" content="Stefan Ziegler" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
