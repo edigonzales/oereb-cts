@@ -4,7 +4,7 @@
     <xsl:template match="/results">
         <html>
         <head>
-            <title>ÖREB Complience Test Suite</title>
+            <title>ÖREB Compliance Test Suite</title>
             <meta name="description" content="ÖREB Compliance Test Suite"/>
             <meta name="keywords" content="ÖREB, Compliance, Test, Suite, CTS, Solothurn, AGI, SOGIS"/>
             <meta name="author" content="Stefan Ziegler" />
