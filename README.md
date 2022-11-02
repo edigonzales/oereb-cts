@@ -2,7 +2,7 @@
 
 ## (todo)
 - Tests (ohne Server)
-- xslt
+- xslt: `java -jar /Users/stefan/apps/SaxonHE10-6J/saxon-he-10.6.jar -s:result.xml -xsl:xml2html.xsl -o:result.html`
 - /url/-Response nicht als xml speichern.
 - picocli?
 
@@ -63,16 +63,3 @@ Es wird eine Java-Runtime Version 17 oder höher benötigt.
 - Probes
 - Wrapper (warum? mühsam von Hand)
 - Results
-
-
-
-
-./gradlew clean lib:test --tests ch.so.agi.oereb.cts.GetEGRIDTest
-
-./gradlew clean lib:test --tests ch.so.agi.oereb.cts.GetExtractByIdTest.foo
-
-
-## xslt
-```
-    java -jar /Users/stefan/apps/SaxonHE10-6J/saxon-he-10.6.jar -s:result.xml -xsl:xml2html.xsl -o:result.html
-```
