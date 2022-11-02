@@ -28,7 +28,7 @@ public class Main {
             } else if (arg.equals("--help")) {
                 System.err.println();
                 System.err.println("--config     The ini file with test configuration (required).");
-                System.err.println("--out        Output directory where the result file(s) are written.");
+                System.err.println("--out        Output directory where the result file(s) are written. Default: System tmp directory.");
                 System.err.println();
                 return;
             }
