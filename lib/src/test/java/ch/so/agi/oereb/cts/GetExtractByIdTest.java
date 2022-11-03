@@ -22,14 +22,14 @@ public class GetExtractByIdTest {
         }
         
         {
-            var parameters = Map.of("EGRID","CH427890824980");
-            var wrapper = new GetExtractByIdWrapper();
-            List<Result> results = wrapper.run("https://oereb.geo.bl.ch/", parameters);
-
-            for (Result result : results) {
-                //var resultXml = xmlMapper.writeValueAsString(result);
-                System.out.println(result);
-            }
+//            var parameters = Map.of("EGRID","CH427890824980");
+//            var wrapper = new GetExtractByIdWrapper();
+//            List<Result> results = wrapper.run("https://oereb.geo.bl.ch/", parameters);
+//
+//            for (Result result : results) {
+//                //var resultXml = xmlMapper.writeValueAsString(result);
+//                System.out.println(result);
+//            }
         }
       
 //        {

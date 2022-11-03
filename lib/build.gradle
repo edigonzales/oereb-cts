@@ -1,8 +1,13 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
 apply from: "$rootDir/gradle/versioning.gradle"
+
+group = 'io.github.sogis'
+def myArtifactId = "oereb-cts"
 
 sourceCompatibility = '17'
 targetCompatibility = '17'
@@ -38,4 +43,58 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+project.archivesBaseName = myArtifactId
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    baseName myArtifactId
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    baseName myArtifactId
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            groupId = group
+            artifactId = myArtifactId
+
+            pom {
+                name = "oereb-cts"
+                url = "https://github.com/edigonzales/oereb-cts"
+                description = myArtifactId
+                scm {
+                    connection = "scm:git:https@github.com/edigonzales/oereb-cts"
+                    developerConnection = "scm:git:https@github.com/edigonzales/oereb-cts"
+                    url = "https://github.com/edigonzales/oereb-cts"
+                }
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://github.com/edigonzales/oereb-cts/blob/master/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "edigonzales"
+                        name = "Stefan Ziegler"
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }
