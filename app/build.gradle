@@ -1,11 +1,13 @@
 plugins {
     id 'application'
     //id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'org.graalvm.buildtools.native' version '0.9.16'
     id 'org.jreleaser' version '1.0.0'
 }
 
 group = 'ch.so.agi'
 def myArtifactId = "oereb-cts"
+def os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem; 
 
 sourceCompatibility = 17
 targetCompatibility = 17
@@ -52,6 +54,40 @@ distributions {
 }
 */
 
+graalvmNative {
+    binaries {
+        main {
+            imageName = 'oereb-cts'
+            mainClass = 'ch.so.agi.oereb.cts.Main' 
+            debug = false 
+            verbose = true 
+            fallback = false 
+            configurationFileDirectories.from(file('src/main/resources/META-INF/native-image/')) 
+
+            buildArgs.add('--enable-url-protocols=http,https') 
+            //buildArgs.add('-H:IncludeResourceBundles=com.sun.org.apache.xerces.internal.impl.msg.XMLMessages');
+            
+            // https://github.com/oracle/graal/issues/4671 
+            // Should be fixed in 22.3
+            //buildArgs.add("-J--add-modules")
+            //buildArgs.add("-JALL-SYSTEM")
+            
+            //jvmArgs.add("-Djava.awt.headless=false")
+            /*
+            agent {
+                enabled = true 
+            }
+            */
+        }
+        test {
+            verbose = true
+            fallback = false 
+            buildArgs.add('--enable-url-protocols=http,https') 
+            //buildArgs.add('-H:IncludeResourceBundles=com.sun.org.apache.xerces.internal.impl.msg.XMLMessages');
+        }
+    }
+}
+
 project.archivesBaseName = myArtifactId + "-app"
 
 startScripts {
@@ -66,6 +102,18 @@ distTar {
     compression = Compression.GZIP
     archiveExtension = "tar.gz"
     archiveBaseName = myArtifactId
+}
+
+distributions {
+    nativeImage {
+        contents {
+            from 'build/native/nativeCompile/'
+        }
+    }
+}
+
+nativeImageDistZip {
+    archiveName myArtifactId + '-' + project.version.toString() + '-' + getOperatingSystemName() + '-' + getArchitectureName() + ".zip"
 }
 
 tasks.named('test') {
@@ -111,3 +159,24 @@ jreleaser {
     }
 }
 */
+
+def getOperatingSystemName() {
+    def os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem; 
+    def osName = os.getName().toLowerCase();
+    if (osName.contains("windows")) {
+        return "windows";
+    } else if (osName.contains("mac os x") || osName.contains("darwin") || osName.contains("osx")) {
+        return "osx";
+    } else if (osName.contains("linux")) {
+        return "linux";
+    } else {
+        // not strictly true
+        return "unix";
+    }
+}
+
+def getArchitectureName() {
+    def arch = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentArchitecture; 
+    def archName = arch.getName().toLowerCase();
+    return archName;    
+}
