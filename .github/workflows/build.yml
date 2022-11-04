@@ -84,7 +84,7 @@ jobs:
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.2.0'
+          version: '22.3.0'
           java-version: '17'
           components: 'native-image'
           cache: 'gradle'
@@ -144,7 +144,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-            
+
       - name: Release distributions
         run: |
           ./gradlew -i app:jreleaserRelease
