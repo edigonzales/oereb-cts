@@ -144,7 +144,7 @@ jreleaser {
     }
     release {
         github {
-            owner = 'edigonzales'
+            repoOwner = 'edigonzales'
             overwrite = true
             apiEndpoint = 'https://api.github.com'
         }
