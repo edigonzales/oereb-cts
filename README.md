@@ -70,7 +70,8 @@ Config für Native Image wegen xpath:
 
 ```
 ./gradlew app:shadowJar
-java -agentlib:native-image-agent=config-output-dir=conf-dir -jar app/build/libs/oereb-cts-app-0.0.LOCALBUILD-all.jar --config app/config.ini
+cd app
+java -agentlib:native-image-agent=config-output-dir=conf-dir -jar build/libs/oereb-cts-app-0.0.LOCALBUILD-all.jar --config config.ini
 ```
 
 Fatjar wird benötigt, weil die die Distribution mittels Shellskript aufgerufen wird und nicht mittels `java -jar ...`.

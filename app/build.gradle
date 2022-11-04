@@ -129,30 +129,31 @@ run {
     //args = ["--help"]
 }
 
-/*
+
 jreleaser {
     gitRootSearch = true
     
     project {
         name = myArtifactId
-        description = 'Creates metadata markup files (html) and transfer files (INTERLIS).'
+        description = 'OEREB Compliance Test Suite'
         website = 'https://agi.so.ch'
-        authors = ['edigonzales', 'ojeker']
+        authors = ['edigonzales']
         license = 'MIT'
-        docsUrl = 'https://github.com/sogis/metabean2file'
+        docsUrl = 'https://github.com/edigonzales/oereb-cts'
     }
     release {
         github {
-            owner = 'sogis'
+            owner = 'edigonzales'
             overwrite = true
             apiEndpoint = 'https://api.github.com'
         }
     }
     distributions {
-        app {
-            distributionType = 'SINGLE_JAR'
+        appJvm {
+            distributionType = 'JAVA_BINARY'
+            stereotype = 'CLI'
             artifact {
-                path = "build/libs/oereb-cts-${version}-all.jar"
+                path = "../artifacts-jvm/oereb-cts-${version}.zip"
             }
             java {
                 groupId = 'ch.so.agi'
@@ -160,9 +161,24 @@ jreleaser {
                 version = '17'
             }
         }
+        appNative {
+            distributionType = 'NATIVE_IMAGE'
+            stereotype = 'CLI'
+            artifact {
+                path = "../artifacts-native/oereb-cts-${version}-linux-x86-64.zip"
+                platform = 'linux'
+            }
+            artifact {
+                path = "../artifacts-native/oereb-cts-${version}-osx-x86-64.zip"
+                platform = 'osx'
+            }
+            artifact {
+                path = "../artifacts-native/oereb-cts-${version}-windows-x86-64.zip"
+                platform = 'windows'
+            }
+        }
     }
 }
-*/
 
 def getOperatingSystemName() {
     def os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem; 
