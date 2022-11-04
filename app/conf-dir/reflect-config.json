@@ -179,7 +179,23 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"net.sf.saxon.functions.CurrentGroup",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"net.sf.saxon.functions.Exists",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"net.sf.saxon.functions.StringJoin",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"net.sf.saxon.functions.String_1",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"net.sf.saxon.functions.Tokenize_1",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {

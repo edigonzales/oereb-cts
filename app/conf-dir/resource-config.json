@@ -15,6 +15,9 @@
     }, 
     {
       "pattern":"\\Qorg/xmlresolver/catalog.xml\\E"
+    }, 
+    {
+      "pattern":"\\Qxml2html.xsl\\E"
     }
   ]},
   "bundles":[{
