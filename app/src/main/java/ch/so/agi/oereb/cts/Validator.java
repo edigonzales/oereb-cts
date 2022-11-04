@@ -43,11 +43,17 @@ public class Validator {
     public void run(String config, String outDirectory) throws InvalidFileFormatException, IOException, XMLStreamException {
         var configFile = new File(config);
         var ini = new Ini(configFile);
-       
-        var results = new ArrayList<Result>();
+               
+        log.info("Xml einmalig");
+        var xof = XMLOutputFactory.newFactory();
+        var xsw = xof.createXMLStreamWriter(new FileWriter(Paths.get(outDirectory, "result.xml").toFile()));
+        xsw.writeStartDocument("utf-8", "1.0");
+        xsw.writeStartElement("results");
 
         var iniSet = ini.entrySet();    // Exception    
-        for (var sectionMap : iniSet) {   
+        for (var sectionMap : iniSet) {  
+            var results = new ArrayList<Result>();
+
             var section = sectionMap.getValue();
             var serviceEndpoint = section.get("SERVICE_ENDPOINT");
             
@@ -76,21 +82,18 @@ public class Validator {
             log.info("Validating service endpoint: " + serviceEndpoint + " ("+sectionMap.getKey()+")");
                         
             {
+                // GetEGRID-Prüfungen
                 var wrapper = new GetEGRIDWrapper();
                 var probeResults = wrapper.run(serviceEndpoint, params);
                 results.addAll(probeResults);
             }
             
             {
+                // Extract-Prüfungen
                 var wrapper = new GetExtractByIdWrapper();
                 var probeResults = wrapper.run(serviceEndpoint, params);
                 results.addAll(probeResults);
             }            
-
-            var xof = XMLOutputFactory.newFactory();
-            var xsw = xof.createXMLStreamWriter(new FileWriter(Paths.get(outDirectory, "result.xml").toFile()));
-            xsw.writeStartDocument("utf-8", "1.0");
-            xsw.writeStartElement("results");
 
             for (Result result : results) {
                 xmlMapper.writeValue(xsw, result);
@@ -98,11 +101,15 @@ public class Validator {
                 String fileName = new File(result.getResultFileLocation()).getName();
                 Files.copy(Path.of(result.getResultFileLocation()), Path.of(outDirectory, fileName), StandardCopyOption.REPLACE_EXISTING);
             }
-
-            xsw.writeEndElement();
-            xsw.writeEndDocument();
-            xsw.flush();
-            xsw.close();            
         }
+        
+        xsw.writeEndElement();
+        xsw.writeEndDocument();
+        xsw.flush();
+        xsw.close();            
     }
+    
+    // xml2html
+    
+    
 }

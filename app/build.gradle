@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    //id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'org.graalvm.buildtools.native' version '0.9.16'
     id 'org.jreleaser' version '1.0.0'
 }
@@ -63,6 +63,8 @@ graalvmNative {
             verbose = true 
             fallback = false 
             configurationFileDirectories.from(file('src/main/resources/META-INF/native-image/')) 
+            configurationFileDirectories.from(file("conf-dir/")) 
+
 
             buildArgs.add('--enable-url-protocols=http,https') 
             //buildArgs.add('-H:IncludeResourceBundles=com.sun.org.apache.xerces.internal.impl.msg.XMLMessages');
@@ -148,12 +150,12 @@ jreleaser {
         app {
             distributionType = 'SINGLE_JAR'
             artifact {
-                path = "build/libs/metabean2file-cli-${version}-all.jar"
+                path = "build/libs/oereb-cts-${version}-all.jar"
             }
             java {
                 groupId = 'ch.so.agi'
                 artifactId = myArtifactId
-                version = '11'
+                version = '17'
             }
         }
     }

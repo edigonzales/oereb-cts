@@ -1,0 +1,24 @@
+{
+  "resources":{
+  "includes":[
+    {
+      "pattern":"\\QMETA-INF/services/javax.xml.stream.XMLInputFactory\\E"
+    }, 
+    {
+      "pattern":"\\QMETA-INF/services/javax.xml.stream.XMLOutputFactory\\E"
+    }, 
+    {
+      "pattern":"\\Qoereb_v2_0/Extract.xsd\\E"
+    }, 
+    {
+      "pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"
+    }, 
+    {
+      "pattern":"\\Qorg/xmlresolver/catalog.xml\\E"
+    }
+  ]},
+  "bundles":[{
+      "name":"com.sun.org.apache.xerces.internal.impl.xpath.regex.message",
+      "locales":[""]
+    }]
+}

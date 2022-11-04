@@ -48,7 +48,7 @@ NUMBER=168
 EGRID=CH807306583219
 ```
 
-Die Prüfungen basieren auf einer Service-Request-URL. Diese Requests sind einem Template  parametrisiert. Es wird versucht aus der Config-Datei alle für die jeweilige Prüfung Parameter zu ersetzen. Gelingt dies, wird der Test durchgeführt. Gelingt dies nicht, wird der Test nicht durchgeführt. Mit diesem Ansatz können jedoch für den GetEGRID-Request keine anderen Werte für `IDENTDN` und `NUMBER` als für den Extract-Request verwendet. Man müsste eine weitere Gruppe in der Config-Datei einführen (z.B. `[SO2]`).
+Die Prüfungen benötigen ein Service-Request-URL. Diese Requests sind ein String-Template  parametrisiert. Es wird versucht aus der Config-Datei alle für die jeweilige Prüfung Parameter zu ersetzen. Gelingt dies, wird der Test durchgeführt. Gelingt dies nicht, wird der Test nicht durchgeführt. Mit diesem Ansatz können jedoch für den GetEGRID-Request keine anderen Werte für `IDENTDN` und `NUMBER` als für den Extract-Request verwendet. Man müsste eine weitere Gruppe in der Config-Datei einführen (z.B. `[SO2]`).
 
 ## Konfigurieren und starten
 
@@ -63,3 +63,14 @@ Es wird eine Java-Runtime Version 17 oder höher benötigt.
 - Probes
 - Wrapper (warum? mühsam von Hand)
 - Results
+
+### GraalVM
+
+Config für Native Image wegen xpath:
+
+```
+./gradlew app:shadowJar
+java -agentlib:native-image-agent=config-output-dir=conf-dir -jar app/build/libs/oereb-cts-app-0.0.LOCALBUILD-all.jar --config app/config.ini
+```
+
+Fatjar wird benötigt, weil die die Distribution mittels Shellskript aufgerufen wird und nicht mittels `java -jar ...`.
