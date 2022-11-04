@@ -140,6 +140,7 @@ jreleaser {
         authors = ['edigonzales']
         license = 'MIT'
         docsUrl = 'https://github.com/edigonzales/oereb-cts'
+        copyright = '2022 Stefan Ziegler'
     }
     release {
         github {
