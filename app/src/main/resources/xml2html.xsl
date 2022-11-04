@@ -369,7 +369,7 @@
                         &#160;
                     </div>
 
-                    <xsl:message>Hallo</xsl:message>
+                    <!-- <xsl:message>Hallo</xsl:message> -->
                 </xsl:for-each-group>
 <!--
                 <h2>Beschreibung</h2>

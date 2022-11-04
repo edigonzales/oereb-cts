@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-jvm:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -37,6 +37,7 @@ jobs:
           path: lib/build/reports/tests/
 
       - name: Build app with Gradle
+        id: buildJvm
         run: ./gradlew clean app:build -i
 
       - uses: actions/upload-artifact@v2
@@ -58,9 +59,95 @@ jobs:
           OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
           OSSRH_PASSWORD: ${{secrets.OSSRH_PASSWORD}} 
 
-      # - name: Release cli
-      #   run: |
-      #     ./gradlew -i app:jreleaserRelease
-      #   env:
-      #     JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   if: ${{ success() && github.ref == 'refs/heads/main'}}
+      - name: 'Upload build artifact'
+        if: always() && (steps.buildJvm.outcome == 'success')
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-jvm
+          path: |
+            app/build/distributions/*.zip
+
+  build-native:
+    name: 'Build with Graal on ${{ matrix.os }}'
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ ubuntu-latest, macOS-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: 'Add Developer Command Prompt for Microsoft Visual C++ '
+        if: ${{ runner.os == 'Windows' }}
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.2.0'
+          java-version: '17'
+          components: 'native-image'
+          cache: 'gradle'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build native image
+        id: buildNative
+        #./gradlew nativeTest
+        run: |
+          ./gradlew nativeCompile app:nativeImageDistZip
+
+      # - uses: actions/upload-artifact@v2
+      #   if: ${{ failure() }}
+      #   with:
+      #     name: reports-native
+      #     path: app/build/reports/tests/
+
+      - name: 'Upload build artifact'
+        if: always() && (steps.buildNative.outcome == 'success')
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-native
+          path: |
+            app/build/distributions/*.zip
+
+  release:
+    needs: [build-jvm, build-native]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 'Check out repository'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.head.outputs.content }}
+          fetch-depth: 0
+
+      - name: 'Download all build artifacts'
+        uses: actions/download-artifact@v2
+
+      - name: 'List artifacts'
+        run: |
+          ls -la /home/runner/work/oereb-cts/oereb-cts/artifacts-jvm
+          ls -la /home/runner/work/oereb-cts/oereb-cts/artifacts-native
+          ls -la /home/runner/work/oereb-cts/oereb-cts/
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'liberica' 
+          java-version: '17'
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+            
+      - name: Release distributions
+        run: |
+          ./gradlew -i app:jreleaserRelease
+        env:
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ success() && github.ref == 'refs/heads/main'}}
