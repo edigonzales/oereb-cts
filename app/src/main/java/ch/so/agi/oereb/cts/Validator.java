@@ -40,6 +40,7 @@ public class Validator {
 
     XmlMapper xmlMapper;
     
+    @Deprecated
     HashMap<String, Boolean> summaryMap;
     
     HashMap<String, List<Result>> resultsMap = new HashMap<>();
@@ -151,6 +152,10 @@ public class Validator {
 
     }
     
+    // Glaubs keine gute Idee. Die Klasse ist bloss zuständig für die Prüfung und das
+    // Herstellen der Resultate-Files.
+    // Mmmmh, wenn ich aber die Lib in Spring Boot verwende, wer macht mir das XML???
+    @Deprecated(forRemoval = true)
     public HashMap<String, Boolean> getSummary() {
         if (summaryMap != null) {
             return summaryMap;
