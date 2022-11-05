@@ -28,8 +28,16 @@ Das Unterprojekt `lib` beinhaltet die eigentlichen Prüfroutinen. Das Unterproje
 
 ## Benutzung
 
+### JVM
+
 ```
-java -jar ...
+./bin/oereb-cts --help
+```
+
+### Native Image
+
+```
+./oereb-cts --help
 ```
 
 Parameter:
