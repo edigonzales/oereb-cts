@@ -58,6 +58,16 @@ EGRID=CH807306583219
 
 Die Prüfungen benötigen ein Service-Request-URL. Diese Requests sind ein String-Template  parametrisiert. Es wird versucht aus der Config-Datei alle für die jeweilige Prüfung Parameter zu ersetzen. Gelingt dies, wird der Test durchgeführt. Gelingt dies nicht, wird der Test nicht durchgeführt. Mit diesem Ansatz können jedoch für den GetEGRID-Request keine anderen Werte für `IDENTDN` und `NUMBER` als für den Extract-Request verwendet. Man müsste eine weitere Gruppe in der Config-Datei einführen (z.B. `[SO2]`).
 
+### Logging
+
+```
+-Djdk.httpclient.HttpClient.log=errors,requests,headers,frames[:control:data:window:all],content,ssl,trace,channel,all
+```
+
+```
+java -Djdk.httpclient.HttpClient.log=requests,headers,frames:all,content,ssl,trace,channel,all -jar app/build/libs/oereb-cts-app-0.0.LOCALBUILD-all.jar --config ../../tmp/config-all.ini --out ../../tmp/oerebcts 2>&1 | tee debug.log
+```
+
 ## Konfigurieren und starten
 
 Siehe Benutzung.
@@ -83,3 +93,5 @@ java -agentlib:native-image-agent=config-output-dir=conf-dir -jar build/libs/oer
 ```
 
 Fatjar wird benötigt, weil die die Distribution mittels Shellskript aufgerufen wird und nicht mittels `java -jar ...`.
+
+
