@@ -1,11 +1,5 @@
 # oereb-cts
 
-## (todo)
-- Tests (ohne Server). Tests sind inexistent jetzt.
-- xslt: `java -jar /Users/stefan/apps/SaxonHE10-6J/saxon-he-10.6.jar -s:result.xml -xsl:xml2html.xsl -o:result.html`
-- /url/-Response nicht als xml speichern.
-- picocli?
-
 ## Beschreibung
 
 Oereb-CTS ist eine Kommandozeilentool zur Prüfung einiger Funktionen eines ÖREB-Katastersystems.
@@ -94,4 +88,9 @@ java -agentlib:native-image-agent=config-output-dir=conf-dir -jar build/libs/oer
 
 Fatjar wird benötigt, weil die die Distribution mittels Shellskript aufgerufen wird und nicht mittels `java -jar ...`.
 
+## (todo)
+- Tests (ohne Server). Tests sind inexistent jetzt.
+- xslt: `java -jar /Users/stefan/apps/SaxonHE10-6J/saxon-he-10.6.jar -s:result.xml -xsl:xml2html.xsl -o:result.html`
+- /url/-Response nicht als xml speichern.
+- picocli?
 
