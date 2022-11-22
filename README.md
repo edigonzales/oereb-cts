@@ -2,7 +2,7 @@
 
 ## Beschreibung
 
-Oereb-CTS ist eine Kommandozeilentool zur Prüfung einiger Funktionen eines ÖREB-Katastersystems.
+Oereb-CTS ist eine Kommandozeilentool zur Prüfung einiger Funktionen eines ÖREB-Katastersystems. Das Resultat sind eine HTML- und XML-Datei und sämtlichen Antworten-XML des Services.
 
 Es werden sowohl Service- wie auch Dokumentenaspekte validiert.
 
