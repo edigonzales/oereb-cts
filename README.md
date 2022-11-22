@@ -39,7 +39,7 @@ Parameter:
 - `config`: Die Konfigurationsdatei mit Angaben des Serverendpunktes, Koordinaten, EGRID etc.
 - `out`: Verzeichnis in welches die Resultate-Datei gespeichert wird. Fehlt die Angabe, wird das tmp-Verzeichnis des Betriebssystems verwendet.
 
-Aufbau der Config-Datei:
+Aufbau der Config-Datei (*.ini):
 
 ```
 [SO]
@@ -49,6 +49,13 @@ IDENTDN=SO0200002457
 NUMBER=168
 EGRID=CH807306583219
 ```
+
+Vollständiger Aufruf:
+
+```
+./oereb-cts --config config.ini --out C:\Users\dummy\tmp\
+```
+
 
 Die Prüfungen benötigen ein Service-Request-URL. Diese Requests sind ein String-Template  parametrisiert. Es wird versucht aus der Config-Datei alle für die jeweilige Prüfung Parameter zu ersetzen. Gelingt dies, wird der Test durchgeführt. Gelingt dies nicht, wird der Test nicht durchgeführt. Mit diesem Ansatz können jedoch für den GetEGRID-Request keine anderen Werte für `IDENTDN` und `NUMBER` als für den Extract-Request verwendet. Man müsste eine weitere Gruppe in der Config-Datei einführen (z.B. `[SO2]`).
 
