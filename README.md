@@ -13,7 +13,7 @@ Es werden sowohl Service- wie auch Dokumentenaspekte validiert.
   * Geometrielemente gemäss Anfrage
 - Extract:
   * siehe GetEGRID
-  * Eingebette Bilder gemäss Anfrage
+  * Eingebettete Bilder gemäss Anfrage
   * Sind alle Bundesthemen im ToC enthalten?
 
 ## Komponenten
