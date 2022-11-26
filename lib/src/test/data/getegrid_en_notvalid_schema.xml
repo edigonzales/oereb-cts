@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns5:GetEGRIDResponse
+	xmlns:ns1="http://www.interlis.ch/geometry/1.0"
+	xmlns:ns2="http://schemas.geo.admin.ch/V_D/OeREB/1.0/Versioning"
+	xmlns:ns3="http://schemas.geo.admin.ch/V_D/OeREB/2.0/ExtractData"
+	xmlns:ns4="http://www.w3.org/2000/09/xmldsig#"
+	xmlns:ns5="http://schemas.geo.admin.ch/V_D/OeREB/2.0/Extract">
+	<ns5:egrid>CH955832730623</ns5:egrid>
+	<ns5:number>198</ns5:number>
+	<ns5:type>
+		<ns3:Code>RealEstate</ns3:Code>
+		<ns3:Text>
+			<ns3:LocalisedText>
+				<ns3:Language>de</ns3:Language>
+				<ns3:Text>Liegenschaft</ns3:Text>
+			</ns3:LocalisedText>
+		</ns3:Text>
+	</ns5:type>
+</ns5:GetEGRIDResponse>

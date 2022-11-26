@@ -31,6 +31,11 @@ public class GetEGRIDProbe extends Probe implements IProbe {
                 var result = this.validateStatusCode(response);
                 probeResult.addResult(result);
             } 
+
+            {
+                var result = this.validateResponseContentType(response);
+                probeResult.addResult(result);
+            } 
             
             {
                 var result = this.validateSchema(response, "oereb_v2_0/Extract.xsd");

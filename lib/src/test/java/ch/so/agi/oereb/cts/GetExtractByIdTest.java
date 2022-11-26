@@ -7,7 +7,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 public class GetExtractByIdTest {
-    @Test
+    //@Test
     public void foo() throws IOException {
 
         {

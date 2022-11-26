@@ -50,7 +50,7 @@ public abstract class Probe {
     // als nicht erfüllt dokumentiert.
     protected Result validateStatusCode(HttpResponse<Path> response) {
         int statusCode = response.statusCode();
-
+        
         var result = new Result();
         result.setClassName("StatusCode");
         result.setDescription("Checks the returned http status code.");
@@ -76,7 +76,7 @@ public abstract class Probe {
             String contentType = response.headers().firstValue("content-type").orElseThrow(()-> {
                 return new Exception("Content-Type header not present.");
             });
-            
+                        
             if (requestUrl.contains("/pdf/")) {
                 if (contentType.equalsIgnoreCase("application/pdf")) {
                     result.setSuccess(true);

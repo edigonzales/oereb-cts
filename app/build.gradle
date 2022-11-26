@@ -20,6 +20,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    all*.exclude group: 'xml-apis'
+}
+
 dependencies {
     //implementation 'commons-cli:commons-cli:1.5.0'
     //implementation 'org.postgresql:postgresql:42.3.4'
