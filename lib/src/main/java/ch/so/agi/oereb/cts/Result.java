@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Result {
+    protected String identifier;
+    
     protected String className; 
     
     protected String description;
@@ -30,6 +32,14 @@ public class Result {
     protected String resultFileLocation;
 
     protected List<Result> results = new ArrayList<Result>();
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
     public String getClassName() {
         return className;

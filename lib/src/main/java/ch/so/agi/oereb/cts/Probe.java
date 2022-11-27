@@ -240,10 +240,11 @@ public abstract class Probe {
                 int count = countNodes(response, "count(//data:"+logo+"Ref/text())");
 
                 if (requestUrl.contains("WITHIMAGES=true")) {
-                    if (count > 0) {
-                        result.setSuccess(false);
-                        result.setMessage("Response has a superfluos "+logo+"Ref element.");
-                    }
+                    // Glaube diese Bedingung gilt nicht.
+//                    if (count > 0) {
+//                        result.setSuccess(false);
+//                        result.setMessage("Response has a superfluos "+logo+"Ref element.");
+//                    }
                 } else if (requestUrl.contains("WITHIMAGES=false") || !requestUrl.contains("WITHIMAGES")) {
                     if (count == 0) {
                         result.setSuccess(false);

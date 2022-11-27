@@ -54,7 +54,7 @@ public class Validator {
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false);
         xmlMapper.addMixIn(Result.class, ResultMixin.class);
     }
-
+    
     public void run(String config, String outDirectory) throws InvalidFileFormatException, IOException, XMLStreamException, SaxonApiException {
         var configFile = new File(config);
         var ini = new Ini(configFile);
@@ -73,6 +73,8 @@ public class Validator {
             }
             
             var params = new HashMap<String,String>();
+            params.put("identifier", sectionMap.getKey());
+            
             if (section.containsKey("EN")) {
                 params.put("EN", section.get("EN"));
             }
