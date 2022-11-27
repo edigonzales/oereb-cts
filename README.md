@@ -11,6 +11,7 @@ Es werden sowohl Service- wie auch Dokumentenaspekte validiert.
   * Response Content Type
   * Schemakonformität
   * Geometrielemente gemäss Anfrage
+  * Koordinaten im Bezugsrahmen LV95
 - Extract:
   * siehe GetEGRID
   * Eingebettete Bilder gemäss Anfrage
