@@ -83,6 +83,14 @@ Es wird eine Java-Runtime Version 17 oder höher benötigt.
 - Wrapper (warum? mühsam von Hand)
 - Results
 
+### xpath in basex
+
+```
+declare namespace geom="http://www.interlis.ch/geometry/1.0";
+count(//geom:coord[./geom:c1 < 2400000 or ./geom:c1 > 2900000 or ./geom:c2 < 1070000 or ./geom:c2 > 1300000])
+```
+
+
 ### GraalVM
 
 Config für Native Image wegen xpath:

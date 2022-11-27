@@ -251,54 +251,60 @@ public abstract class Probe {
                     }
                 }
             }
+        }
+        
+        {
+            int count = countNodes(response, "count(//data:RestrictionOnLandownership/data:Map/data:Image/data:LocalisedBlob/data:Blob/text())");
             
-            {
-                int count = countNodes(response, "count(//data:RestrictionOnLandownership/data:Map/data:Image/data:LocalisedBlob/data:Blob/text())");
-                
-                if (requestUrl.contains("WITHIMAGES=true")) {
-                    if (count == 0) {
-                        result.setSuccess(false);
-                        result.setMessage("Response misses image blob element.");
-                    }
-                } else if (requestUrl.contains("WITHIMAGES=false") || !requestUrl.contains("WITHIMAGES")) {
-                    if (count > 0) {
-                        result.setSuccess(false);
-                        result.setMessage("Response has a superfluos image blob element.");
-                    }
+            if (requestUrl.contains("WITHIMAGES=true")) {
+                if (count == 0) {
+                    result.setSuccess(false);
+                    result.setMessage("Response misses image blob element.");
+                }
+            } else if (requestUrl.contains("WITHIMAGES=false") || !requestUrl.contains("WITHIMAGES")) {
+                if (count > 0) {
+                    result.setSuccess(false);
+                    result.setMessage("Response has a superfluos image blob element.");
                 }
             }
         }
-        
+
         result.stop();
         return result;
     }
         
     // TODO:
     // Das reicht im Prinzip schon nicht ganz:
-    // Es sollte geprüft werdne, ob alle Elemente, die eine Geometrie haben sollten, auch eine Geometrie haben.
+    // Es sollte geprüft werden, ob alle Elemente, die eine Geometrie haben sollten, auch eine Geometrie haben.
     // Name: validateGeometryNodeExistence ?
-    protected Result validateGeometryNodesCount(HttpResponse<Path> response, String expression) throws SaxonApiException {
+    protected Result validateGeometryNodesCount(HttpResponse<Path> response, String expression) {
         Result result = new Result();
         result.setClassName("GeometryExistence");
         result.setDescription("Checks if the returned xml document has geometry elements(s) or is not allowed to have geometry elements based on the request parameters.");
         result.start();
 
-        int count = countNodes(response, expression);
-        
-        String requestUrl = response.request().uri().toString();
-        
-        if (requestUrl.contains("GEOMETRY=true")) {
-            if (count == 0) {
-                result.setSuccess(false);
-                result.setMessage("Response misses geometry element(s).");
-            }
-        } else if (requestUrl.contains("GEOMETRY=false") || !requestUrl.contains("GEOMETRY")) {
-            if (count > 0) {
-                result.setSuccess(false);
-                result.setMessage("Response has superfluos geometry element(s).");
-            }
+        try {
+            int count = countNodes(response, expression);
+            
+            String requestUrl = response.request().uri().toString();
+            
+            if (requestUrl.contains("GEOMETRY=true")) {
+                if (count == 0) {
+                    result.setSuccess(false);
+                    result.setMessage("Response misses geometry element(s).");
+                }
+            } else if (requestUrl.contains("GEOMETRY=false") || !requestUrl.contains("GEOMETRY")) {
+                if (count > 0) {
+                    result.setSuccess(false);
+                    result.setMessage("Response has superfluos geometry element(s).");
+                }
+            }     
+        } catch (SaxonApiException e) {
+            result.setSuccess(false);
+            result.setMessage(e.getMessage());
+        } finally {
+            result.stop();
         }
-        result.stop();
         return result;
     }
     

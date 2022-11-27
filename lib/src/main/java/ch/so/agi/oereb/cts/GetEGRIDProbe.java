@@ -44,14 +44,19 @@ public class GetEGRIDProbe extends Probe implements IProbe {
 
             {
                 // Prüfen, ob Geometrie vorhanden ist resp. nicht vorhanden sein darf.
+                // Das reicht nicht wirklich. Es müsste für jedes Element geprüft werden,
+                // ob Geometrie vorhanden ist oder nicht (oder nicht sein darf oder sein muss).
                 var result = this.validateGeometryNodesCount(response, "count(//geom:coord)");
                 probeResult.addResult(result);
             } 
+            {
+                var coordSystemCheck = new CoordSystemCheck();
+                var result = coordSystemCheck.run(response);
+                probeResult.addResult(result);
+            }
         } catch (InterruptedException e) { // TODO!!!
             e.printStackTrace();
-        } catch (SaxonApiException e) { // TODO!!!
-            e.printStackTrace();
-        }
+        } 
         return probeResult;
     }
 }

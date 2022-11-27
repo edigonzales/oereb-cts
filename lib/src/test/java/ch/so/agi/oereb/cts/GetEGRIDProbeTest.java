@@ -216,4 +216,37 @@ public class GetEGRIDProbeTest {
             }
         } 
     }
+    
+    @Test
+    public void getegrid_en_fail_not_lv95() throws IOException {
+        // Prepare 
+        var xmlResponse = Files.readString(Paths.get("src/test/data/getegrid_en_wrong_coordsystem.xml"));
+       
+        var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/xml")
+                .setResponseCode(200)
+                .setBody(xmlResponse);
+
+        mockWebServer.enqueue(mockResponse);
+        
+        var request = "/getegrid/xml/?EN=2694124,1180546&GEOMETRY=true";
+        mockWebServer.url(request);
+        
+        var serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
+        var requestUrl = URI.create("http://" + serviceEndpoint + "/" + request);
+        
+        // Run test
+        var probe = new GetEGRIDProbe();
+        var result = probe.run(serviceEndpoint, requestUrl);
+        
+        // Validate
+        assertFalse(result.isSuccess());
+        for (Result res : result.getResults()) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.CoordSystemCheck")) {
+                assertFalse(res.isSuccess());
+                break;
+            }
+        } 
+    }
+
 }
