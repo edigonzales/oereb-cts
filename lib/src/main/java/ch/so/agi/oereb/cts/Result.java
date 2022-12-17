@@ -1,12 +1,15 @@
 package ch.so.agi.oereb.cts;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Result {
+public class Result implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     protected String identifier;
     
     protected String className; 

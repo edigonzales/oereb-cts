@@ -109,4 +109,5 @@ Fatjar wird benötigt, weil die die Distribution mittels Shellskript aufgerufen 
 - xslt: `java -jar /Users/stefan/apps/SaxonHE10-6J/saxon-he-10.6.jar -s:result.xml -xsl:xml2html.xsl -o:result.html`
 - /url/-Response nicht als xml speichern.
 - picocli?
+- Dokumentation: serviceEndpoint, damit im Resultat gruppiert werden kann wenn unterschiedliche Endpoints geprüft werden. (kann vielleicht auch anders gelöst werden?) -> mit dem identifiere wohl nicht mehr nötig. -> xml2html muss angepasst werden.
 
