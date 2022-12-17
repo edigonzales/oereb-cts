@@ -46,6 +46,10 @@ public class GetEGRIDProbeTest {
         var probe = new GetEGRIDProbe();
         var result = probe.run(serviceEndpoint, requestUrl);
         
+//        for (Result res : result.getResults()) {
+//            System.out.println(res.toString());
+//        } 
+
         // Validate
         assertTrue(result.isSuccess());
         
@@ -78,11 +82,11 @@ public class GetEGRIDProbeTest {
         // Run test
         var probe = new GetEGRIDProbe();
         var result = probe.run(serviceEndpoint, requestUrl);
-        
+
         // Validate
         assertFalse(result.isSuccess());
         for (Result res : result.getResults()) {
-            if (res.getClassName().equalsIgnoreCase("StatusCode")) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.StatusCodeCheck")) {
                 assertFalse(res.isSuccess());
                 break;
             }
@@ -114,7 +118,7 @@ public class GetEGRIDProbeTest {
         // Validate
         assertFalse(result.isSuccess());
         for (Result res : result.getResults()) {
-            if (res.getClassName().equalsIgnoreCase("ResponseContentType")) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.ResponseContentTypeCheck")) {
                 assertFalse(res.isSuccess());
                 break;
             }
@@ -146,7 +150,7 @@ public class GetEGRIDProbeTest {
         // Validate
         assertFalse(result.isSuccess());
         for (Result res : result.getResults()) {
-            if (res.getClassName().equalsIgnoreCase("GeometryExistence")) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.GeometryNodeExistenceCheck")) {
                 assertFalse(res.isSuccess());
                 break;
             }
@@ -178,7 +182,7 @@ public class GetEGRIDProbeTest {
         // Validate
         assertFalse(result.isSuccess());
         for (Result res : result.getResults()) {
-            if (res.getClassName().equalsIgnoreCase("GeometryExistence")) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.GeometryNodeExistenceCheck")) {
                 assertFalse(res.isSuccess());
                 break;
             }
@@ -210,7 +214,7 @@ public class GetEGRIDProbeTest {
         // Validate
         assertFalse(result.isSuccess());
         for (Result res : result.getResults()) {
-            if (res.getClassName().equalsIgnoreCase("SchemaValidation")) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.SchemaCheck")) {
                 assertFalse(res.isSuccess());
                 break;
             }

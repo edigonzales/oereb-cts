@@ -44,6 +44,7 @@ public class SchemaCheck extends Check implements ICheck {
             Document doc = dbf.newDocumentBuilder().parse(response.body().toFile());
 
             Schema schema = schemaFactory.newSchema(getClass().getClassLoader().getResource(xsd));
+            
             Validator validator = schema.newValidator();
                         
             final List<SAXParseException> exceptions = new LinkedList<SAXParseException>();
