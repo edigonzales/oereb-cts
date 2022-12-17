@@ -1,6 +1,5 @@
 package ch.so.agi.oereb.cts;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -8,8 +7,6 @@ import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.sf.saxon.s9api.SaxonApiException;
 
 public class GetEGRIDProbe extends Probe implements IProbe {
     final Logger log = LoggerFactory.getLogger(GetEGRIDWrapper.class);
@@ -28,30 +25,31 @@ public class GetEGRIDProbe extends Probe implements IProbe {
             probeResult.setResultFileLocation(response.body().toFile().getAbsolutePath());
 
             {
-                var result = this.validateStatusCode(response);
+                var check = new StatusCodeCheck();
+                var result = check.run(response);
                 probeResult.addResult(result);
             } 
 
             {
-                var result = this.validateResponseContentType(response);
+                var check = new ResponseContentTypeCheck();
+                var result = check.run(response);
                 probeResult.addResult(result);
             } 
             
             {
-                var result = this.validateSchema(response, "oereb_v2_0/Extract.xsd");
+                var check = new SchemaCheck();
+                var result = check.run(response);
                 probeResult.addResult(result);
             }
 
             {
-                // Prüfen, ob Geometrie vorhanden ist resp. nicht vorhanden sein darf.
-                // Das reicht nicht wirklich. Es müsste für jedes Element geprüft werden,
-                // ob Geometrie vorhanden ist oder nicht (oder nicht sein darf oder sein muss).
-                var result = this.validateGeometryNodesCount(response, "count(//geom:coord)");
+                var check = new GeometryNodeExistenceCheck();
+                var result = check.run(response);
                 probeResult.addResult(result);
             } 
             {
-                var coordSystemCheck = new CoordSystemCheck();
-                var result = coordSystemCheck.run(response);
+                var check = new CoordSystemCheck();
+                var result = check.run(response);
                 probeResult.addResult(result);
             }
         } catch (InterruptedException e) { // TODO!!!

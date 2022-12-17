@@ -23,43 +23,45 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
             probeResult.setResultFileLocation(response.body().toFile().getAbsolutePath());
 
             {
-                var result = this.validateStatusCode(response);
+                var check = new StatusCodeCheck();
+                var result = check.run(response);
                 probeResult.addResult(result);
             } 
             
             if (!requestUrl.toString().contains("/url/")) {
                 {
-                    var result = this.validateResponseContentType(response);
+                    var check = new ResponseContentTypeCheck();
+                    var result = check.run(response);
                     probeResult.addResult(result);
                 }
                 
                 {
-                    // TODO: expression für ÖREB fix machen?
-                    var result = this.validateSchema(response, "oereb_v2_0/Extract.xsd");
+                    var check = new SchemaCheck();
+                    var result = check.run(response);
                     probeResult.addResult(result);
                 }
 
                 {
-                    // Da im Check die RequestUrl bekannt ist, könnte man if/else für die Expression machen.
-                    var result = this.validateGeometryNodesCount(response, "count(//data:RestrictionOnLandownership/data:Geometry/data:Surface/geom:exterior/geom:polyline/geom:coord)");
+                    var check = new GeometryNodeExistenceCheck();
+                    var result = check.run(response);
                     probeResult.addResult(result);
                 } 
                 
                 {
-                    var result = this.validateEmbeddedImages(response);
+                    var check = new EmbeddedImagesCheck();
+                    var result = check.run(response);
                     probeResult.addResult(result);
                 }
                 
                 {
-                    var result = this.validateFederalTopicCodesExistence(response);
+                    var check = new FederalTopicExistenceCheck();
+                    var result = check.run(response);
                     probeResult.addResult(result);
                 }
             }  
         } catch (InterruptedException e) { // TODO!!!
             e.printStackTrace();
-        } catch (SaxonApiException e) { // TODO!!!
-            e.printStackTrace();
-        } 
+        }  
         return probeResult;
     }
 
