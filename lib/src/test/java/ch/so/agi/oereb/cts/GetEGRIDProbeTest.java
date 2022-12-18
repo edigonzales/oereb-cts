@@ -44,7 +44,7 @@ public class GetEGRIDProbeTest {
         
         // Run test
         var probe = new GetEGRIDProbe();
-        var result = probe.run(serviceEndpoint, requestUrl);
+        var result = probe.run(requestUrl);
         
 //        for (Result res : result.getResults()) {
 //            System.out.println(res.toString());
@@ -81,7 +81,7 @@ public class GetEGRIDProbeTest {
         
         // Run test
         var probe = new GetEGRIDProbe();
-        var result = probe.run(serviceEndpoint, requestUrl);
+        var result = probe.run(requestUrl);
 
         // Validate
         assertFalse(result.isSuccess());
@@ -113,7 +113,7 @@ public class GetEGRIDProbeTest {
         
         // Run test
         var probe = new GetEGRIDProbe();
-        var result = probe.run(serviceEndpoint, requestUrl);
+        var result = probe.run(requestUrl);
                 
         // Validate
         assertFalse(result.isSuccess());
@@ -145,7 +145,7 @@ public class GetEGRIDProbeTest {
         
         // Run test
         var probe = new GetEGRIDProbe();
-        var result = probe.run(serviceEndpoint, requestUrl);
+        var result = probe.run(requestUrl);
         
         // Validate
         assertFalse(result.isSuccess());
@@ -177,7 +177,7 @@ public class GetEGRIDProbeTest {
         
         // Run test
         var probe = new GetEGRIDProbe();
-        var result = probe.run(serviceEndpoint, requestUrl);
+        var result = probe.run(requestUrl);
         
         // Validate
         assertFalse(result.isSuccess());
@@ -209,7 +209,7 @@ public class GetEGRIDProbeTest {
         
         // Run test
         var probe = new GetEGRIDProbe();
-        var result = probe.run(serviceEndpoint, requestUrl);
+        var result = probe.run(requestUrl);
         
         // Validate
         assertFalse(result.isSuccess());
@@ -241,7 +241,7 @@ public class GetEGRIDProbeTest {
         
         // Run test
         var probe = new GetEGRIDProbe();
-        var result = probe.run(serviceEndpoint, requestUrl);
+        var result = probe.run(requestUrl);
         
         // Validate
         assertFalse(result.isSuccess());
