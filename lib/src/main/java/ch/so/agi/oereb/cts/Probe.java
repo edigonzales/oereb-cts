@@ -85,10 +85,5 @@ public abstract class Probe {
         result.stop();
         
         return response;
-    }    
-        
-    // Entfernt doppelte Slashes
-    protected String fixUrl(String url) {
-        return url.replaceAll("(?<=[^:\\s])(\\/+\\/)", "/");
-    }    
+    }        
 }

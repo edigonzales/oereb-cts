@@ -13,7 +13,7 @@ import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
+public class GetEGRIDWrapper {
     final Logger log = LoggerFactory.getLogger(GetEGRIDWrapper.class);
 
     private List<String> requestTemplates = List.of(
@@ -44,7 +44,7 @@ public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
             
             try {
                 var requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
-                requestUrlString = fixUrl(requestUrlString);
+                requestUrlString = Utils.fixUrl(requestUrlString);
                 
                 for (var queryParameter : queryParameters) { 
                     var requestUrl = URI.create(requestUrlString + queryParameter);
