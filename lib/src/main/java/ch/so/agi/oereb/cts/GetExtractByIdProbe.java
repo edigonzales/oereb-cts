@@ -10,14 +10,17 @@ import net.sf.saxon.s9api.SaxonApiException;
 public class GetExtractByIdProbe extends Probe implements IProbe {
 
     @Override
-    public Result run(URI serviceEndpoint, URI requestUrl) throws IOException {
+    public Result run(URI requestUrl) throws IOException {
         var workFolder = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), FOLDER_PREFIX).toFile();        
 
         var probeResult = new Result();
         probeResult.setClassName(this.getClass().getCanonicalName());
-        probeResult.setServiceEndpoint(serviceEndpoint);
         probeResult.setRequest(requestUrl);
         
+        int idx = requestUrl.toString().indexOf("extract");
+        String serviceEndpoint = requestUrl.toString().substring(0, idx);
+        probeResult.setServiceEndpoint(URI.create(serviceEndpoint));
+
         try {
             var response = this.makeRequest(workFolder, requestUrl, probeResult);
             probeResult.setResultFileLocation(response.body().toFile().getAbsolutePath());

@@ -48,10 +48,9 @@ public class GetEGRIDWrapper extends Probe /* implements IProbe*/ {
                 
                 for (var queryParameter : queryParameters) { 
                     var requestUrl = URI.create(requestUrlString + queryParameter);
-                    var serviceEndpointUrl = URI.create(serviceEndpoint);
 
                     var probe = new GetEGRIDProbe();
-                    var probeResult = probe.run(serviceEndpointUrl, requestUrl);
+                    var probeResult = probe.run(requestUrl);
                     probeResult.setIdentifier(parameters.get("identifier"));
                     
                     resultList.add(probeResult);

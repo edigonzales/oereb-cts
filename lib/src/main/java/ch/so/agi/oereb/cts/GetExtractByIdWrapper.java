@@ -49,15 +49,15 @@ public class GetExtractByIdWrapper extends Probe /*implements IProbe */ {
                 
                 for (var queryParameter : queryParameters) { 
                     var requestUrl = URI.create(requestUrlString + queryParameter);
-                    var serviceEndpointUrl = URI.create(serviceEndpoint);
                     
                     if (requestUrl.toString().contains("/url/") && (requestUrl.toString().contains("GEOMETRY") || requestUrl.toString().contains("WITHIMAGES"))) {
                         continue;
                     }
 
                     var probe = new GetExtractByIdProbe();
-                    var probeResult = probe.run(serviceEndpointUrl, requestUrl);
-                    
+                    var probeResult = probe.run(requestUrl);
+                    probeResult.setIdentifier(parameters.get("identifier"));
+
                     resultList.add(probeResult);
                 }
             } catch (UnsupportedEncodingException e) {
