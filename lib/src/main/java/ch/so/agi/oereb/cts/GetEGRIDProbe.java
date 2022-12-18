@@ -32,19 +32,16 @@ public class GetEGRIDProbe extends Probe implements IProbe {
                 var result = check.run(response);
                 probeResult.addResult(result);
             } 
-
             {
                 var check = new ResponseContentTypeCheck();
                 var result = check.run(response);
                 probeResult.addResult(result);
             } 
-            
             {
                 var check = new SchemaCheck();
                 var result = check.run(response);
                 probeResult.addResult(result);
             }
-
             {
                 var check = new GeometryNodeExistenceCheck();
                 var result = check.run(response);

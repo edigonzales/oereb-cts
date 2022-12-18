@@ -37,25 +37,21 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
                     var result = check.run(response);
                     probeResult.addResult(result);
                 }
-                
                 {
                     var check = new SchemaCheck();
                     var result = check.run(response);
                     probeResult.addResult(result);
                 }
-
                 {
                     var check = new GeometryNodeExistenceCheck();
                     var result = check.run(response);
                     probeResult.addResult(result);
                 } 
-                
                 {
                     var check = new EmbeddedImagesCheck();
                     var result = check.run(response);
                     probeResult.addResult(result);
                 }
-                
                 {
                     var check = new FederalTopicExistenceCheck();
                     var result = check.run(response);
