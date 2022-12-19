@@ -27,7 +27,7 @@ public class GetEGRIDWrapper {
             "&GEOMETRY=false"
             );
         
-    public List<Result> run(String serviceEndpoint, Map<String,String> parameters) throws IOException {
+    public List<Result> run(String serviceEndpoint, Map<String,String> parameters) {
         List<Result> resultList = new ArrayList<Result>();
 
         for (var requestTemplate : requestTemplates) {
