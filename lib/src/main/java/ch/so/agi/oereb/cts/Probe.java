@@ -6,11 +6,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpClient.Version;
 import java.net.http.HttpHeaders;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,7 +68,7 @@ public abstract class Probe {
         return httpClient;
     }
 
-    protected HttpResponse<Path> makeRequest(File workFolder, URI requestUrl, Result result) throws IOException, InterruptedException {
+    protected HttpResponse<Path> makeRequest(File workFolder, URI requestUrl, Result result) throws IOException, HttpTimeoutException, InterruptedException {
         var requestBuilder = HttpRequest.newBuilder();
         requestBuilder.GET().header("accept", "application/xml").uri(requestUrl);
         // TODO: Wir haben bei uns ein leicht unterschiedliches Verhalten zwischen GetEGRID und
@@ -74,7 +76,7 @@ public abstract class Probe {
         // 2022-12-17: Ich denke unser Verhalten ist nicht korrekt. Es ist unlogisch einen Accept-
         // Header zu schicken und gleichzeit im Pfad das Outputformat anzugeben.
 
-        var request = requestBuilder.build();
+        var request = requestBuilder.timeout(Duration.ofMinutes(2L)).build();
         var httpClient = createHttpClient();
         
         var fileName = createFileName(requestUrl);
