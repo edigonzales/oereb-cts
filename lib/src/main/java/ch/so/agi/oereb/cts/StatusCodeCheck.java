@@ -26,7 +26,7 @@ public class StatusCodeCheck extends Check implements ICheck {
 
         if (statusCode != 200 && statusCode != 204 && statusCode != 500 && statusCode != 303) {
             result.setSuccess(false);
-            result.setMessage("Returned status code does not match expected status code (200, 204, 303, 500).");
+            result.setMessage("Returned status '"+String.valueOf(statusCode)+"' code does not match expected status code (200, 204, 303, 500).");
         } 
         result.stop();
         return result;    
