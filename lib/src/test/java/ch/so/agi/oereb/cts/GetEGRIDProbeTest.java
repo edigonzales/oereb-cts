@@ -62,6 +62,34 @@ public class GetEGRIDProbeTest {
     }
     
     @Test
+    public void getegrid_en_ok_with_extended_content_type() throws IOException {
+        // Prepare 
+        var xmlResponse = Files.readString(Paths.get("src/test/data/getegrid_en_ok.xml"));
+       
+        var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/xml; charset=UTF-8")
+                .setResponseCode(200)
+                .setBody(xmlResponse);
+
+        mockWebServer.enqueue(mockResponse);
+        
+        var request = "/getegrid/xml/?EN=2600589,1215498";
+        mockWebServer.url(request);
+        
+        var serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
+        var requestUrl = URI.create("http://" + serviceEndpoint + "/" + request);
+        
+        // Run test
+        var probe = new GetEGRIDProbe();
+        var result = probe.run(requestUrl);
+
+        // Validate
+        assertTrue(result.isSuccess());
+    }
+
+    
+    
+    @Test
     public void getegrid_en_fail_statuscode() throws IOException {
         // Prepare 
         var xmlResponse = Files.readString(Paths.get("src/test/data/getegrid_en_ok.xml"));

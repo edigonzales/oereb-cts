@@ -31,11 +31,11 @@ public class ResponseContentTypeCheck extends Check implements ICheck {
                     result.setMessage("Response Content-Type must be 'application/pdf'. Response Content-Type is '" + contentType + "'.");
                 }
             } else if (requestUrl.contains("/xml/")) {
-                if (contentType.equalsIgnoreCase("application/xml")) {
+                if (contentType.equalsIgnoreCase("application/xml") || contentType.toLowerCase().replace(" ", "").equalsIgnoreCase("application/xml;charset=utf-8")) {
                     result.setSuccess(true);
                 } else {
                     result.setSuccess(false);
-                    result.setMessage("Response Content-Type must be 'application/xml'. Response Content-Type is '" + contentType + "'.");
+                    result.setMessage("Response Content-Type must be 'application/xml' (or application/xml; charset=utf-8). Response Content-Type is '" + contentType + "'.");
                 }
             } else {
                 result.setSuccess(false);
