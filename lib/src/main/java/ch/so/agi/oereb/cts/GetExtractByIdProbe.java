@@ -48,6 +48,11 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
                     probeResult.addResult(result);
                 } 
                 {
+                    var check = new CoordSystemCheck();
+                    var result = check.run(response);
+                    probeResult.addResult(result);
+                }
+                {
                     var check = new EmbeddedImagesCheck();
                     var result = check.run(response);
                     probeResult.addResult(result);
