@@ -87,8 +87,6 @@ public class GetEGRIDProbeTest {
         assertTrue(result.isSuccess());
     }
 
-    
-    
     @Test
     public void getegrid_en_fail_statuscode() throws IOException {
         // Prepare 

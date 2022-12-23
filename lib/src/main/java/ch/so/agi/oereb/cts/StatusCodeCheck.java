@@ -20,14 +20,19 @@ public class StatusCodeCheck extends Check implements ICheck {
         result.setClassName(this.name);
         result.setDescription(this.description);
         result.start();
-
+        
         int statusCode = response.statusCode();
         result.setStatusCode(statusCode);
 
-        if (statusCode != 200 && statusCode != 204 && statusCode != 500 && statusCode != 303) {
+        String requestUrl = response.request().uri().toString();
+        if (requestUrl.toLowerCase().contains("url") && statusCode != 303) {
+            result.setSuccess(false);
+            result.setMessage("Returned status '"+String.valueOf(statusCode)+"' code does not match expected status code (303).");
+        } else if (statusCode != 200 && statusCode != 204 && statusCode != 500 && !requestUrl.toLowerCase().contains("url")) {
             result.setSuccess(false);
             result.setMessage("Returned status '"+String.valueOf(statusCode)+"' code does not match expected status code (200, 204, 303, 500).");
-        } 
+        }
+
         result.stop();
         return result;    
     }

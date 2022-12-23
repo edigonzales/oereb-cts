@@ -1,12 +1,60 @@
 package ch.so.agi.oereb.cts;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 public class GetExtractByIdTest {
+    private MockWebServer mockWebServer;
+
+    @BeforeEach
+    public void setup() throws IOException {
+      this.mockWebServer = new MockWebServer();
+      this.mockWebServer.start();
+    }
+
+    @Test
+    public void getegrid_en_fail_statuscode_url_redirect() throws IOException {
+        // Prepare 
+        var xmlResponse = Files.readString(Paths.get("src/test/data/getegrid_en_ok.xml"));
+       
+        var mockResponse = new MockResponse()
+                .addHeader("Location", "http://localhost/map/oereb/?egrid=CHCH807306583219")
+                .setResponseCode(500);
+
+        mockWebServer.enqueue(mockResponse);
+        
+        var request = "/extract/url/?EGRID=CH807306583219";
+        mockWebServer.url(request);
+        
+        var serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
+        var requestUrl = URI.create("http://" + serviceEndpoint + "/" + request);
+        
+        // Run test
+        var probe = new GetExtractByIdProbe();
+        var result = probe.run(requestUrl);
+
+        // Validate
+        assertFalse(result.isSuccess());
+        for (Result res : result.getResults()) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.StatusCodeCheck")) {
+                assertFalse(res.isSuccess());
+                break;
+            }
+        } 
+    }
+    
     //@Test
     public void foo() throws IOException {
 
