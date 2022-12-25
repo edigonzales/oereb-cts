@@ -47,7 +47,7 @@ public class GetVersionsTest {
         var probe = new GetVersionsProbe();
         var result = probe.run(requestUrl);
         
-        System.out.println(result);
+        //System.out.println(result);
 
         // Validate
         assertTrue(result.isSuccess()); 
