@@ -9,6 +9,7 @@ import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.WhitespaceStrippingPolicy;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XPathSelector;
+import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 
 public class VersionsCheck extends Check implements ICheck {
@@ -42,6 +43,15 @@ public class VersionsCheck extends Check implements ICheck {
 
             XPathSelector selector = xpath.compile(expression).load();
             selector.setContextItem(responseDoc);
+            
+            XdmItem versionItemText = selector.evaluateSingle();
+            if (versionItemText == null) {
+                result.setSuccess(false);
+                result.setMessage("No version element found.");
+                result.stop();
+                
+                return result;
+            }
             
             String versionTxt = selector.evaluateSingle().getStringValue();
             
