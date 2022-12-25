@@ -34,7 +34,10 @@ public class SchemaCheck extends Check implements ICheck {
         result.start();
 
         String xsd = "oereb_v2_0/Extract.xsd";
-        //if (requestUrl.toLowerCase().contains("XXXXXXX")) 
+        String requestUrl = response.request().uri().toString();
+        if (requestUrl.toLowerCase().contains("/versions/")) {
+            xsd = "oereb_v2_0/Versioning.xsd";
+        } 
         
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

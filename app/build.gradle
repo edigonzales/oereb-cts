@@ -130,7 +130,8 @@ tasks.named('test') {
 
 run {
     //args = ["--config", "src/test/data/config-all.ini", "--out", "/Users/stefan/tmp/oerebcts/"]
-    args = ["--config", "src/test/data/config-all.ini", "--out", "/Users/stefan/tmp/oerebcts-test-2/"]
+    //args = ["--config", "src/test/data/config-all.ini", "--out", "/Users/stefan/tmp/oerebcts-test-2/"]
+    args = ["--config", "config.ini", "--out", "/Users/stefan/tmp/oerebcts-test-2/"]
     //args = ["--help"]
 }
 

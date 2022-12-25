@@ -93,7 +93,21 @@ public class Validator {
             }
 
             log.info("Validating service endpoint: " + serviceEndpoint + " ("+sectionMap.getKey()+")");
-                        
+              
+            {
+                // Capabilities-Prüfungen
+                var wrapper = new GetCapabilitiesWrapper();
+                var probeResults = wrapper.run(serviceEndpoint, params);
+                results.addAll(probeResults);
+            }
+
+            {
+                // Versions-Prüfungen
+                var wrapper = new GetVersionsWrapper();
+                var probeResults = wrapper.run(serviceEndpoint, params);
+                results.addAll(probeResults);
+            }
+
             {
                 // GetEGRID-Prüfungen
                 var wrapper = new GetEGRIDWrapper();

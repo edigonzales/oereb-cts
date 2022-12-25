@@ -25,7 +25,7 @@ public class GetExtractByIdTest {
     }
 
     @Test
-    public void getegrid_en_fail_statuscode_url_redirect() throws IOException {
+    public void extract_fail_statuscode_url_redirect() throws IOException {
         // Prepare 
         var xmlResponse = Files.readString(Paths.get("src/test/data/getegrid_en_ok.xml"));
        
