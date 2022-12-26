@@ -49,11 +49,10 @@ public class VersionsCheck extends Check implements ICheck {
                 result.setSuccess(false);
                 result.setMessage("No version element found.");
                 result.stop();
-                
                 return result;
             }
             
-            String versionTxt = selector.evaluateSingle().getStringValue();
+            String versionTxt = versionItemText.getStringValue();
             
             if (!versionTxt.equals("extract-2.0")) {
                 result.setSuccess(false);

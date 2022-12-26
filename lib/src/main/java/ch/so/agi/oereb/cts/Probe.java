@@ -70,11 +70,7 @@ public abstract class Probe {
 
     protected HttpResponse<Path> makeRequest(File workFolder, URI requestUrl, Result result) throws IOException, HttpTimeoutException, InterruptedException {
         var requestBuilder = HttpRequest.newBuilder();
-        requestBuilder.GET().header("accept", "application/xml").uri(requestUrl);
-        // TODO: Wir haben bei uns ein leicht unterschiedliches Verhalten zwischen GetEGRID und
-        // GetExtract. Beim Extract muss man den Accept-Header setzen. Siehe Controller im Code.
-        // 2022-12-17: Ich denke unser Verhalten ist nicht korrekt. Es ist unlogisch einen Accept-
-        // Header zu schicken und gleichzeit im Pfad das Outputformat anzugeben.
+        requestBuilder.GET().uri(requestUrl);
 
         var request = requestBuilder.timeout(Duration.ofMinutes(2L)).build();
         var httpClient = createHttpClient();
