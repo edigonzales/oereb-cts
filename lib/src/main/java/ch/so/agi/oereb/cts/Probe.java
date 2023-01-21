@@ -46,8 +46,8 @@ import net.sf.saxon.s9api.XdmNode;
 public abstract class Probe {
     protected static String FOLDER_PREFIX = "oerebcts";
         
-    private String createFileName(URI fileName) {
-        return fileName
+    private String createFileName(URI requestUrl) {
+        String fileName = requestUrl
                 .toString()
                 .replace("https://", "")
                     .replace("http://", "")
@@ -57,7 +57,16 @@ public abstract class Probe {
                     .replace("/", "_")
                     .replace("=", "_")
                     .replace(",", "-")
-                    .toLowerCase() + ".xml";
+                    .toLowerCase();
+        
+        if (requestUrl.toString().contains("/xml/")) {
+            fileName += ".xml";
+        } else if (requestUrl.toString().contains("/pdf/")) {
+            fileName += ".pdf";
+        } else {
+            fileName += ".undefined";
+        }
+        return fileName;
     }
     
     private HttpClient createHttpClient() {

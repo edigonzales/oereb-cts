@@ -25,18 +25,24 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
             var response = this.makeRequest(workFolder, requestUrl, probeResult);
             probeResult.setResultFileLocation(response.body().toFile().getAbsolutePath());
 
+            // Alle Requests
             {
                 var check = new StatusCodeCheck();
                 var result = check.run(response);
                 probeResult.addResult(result);
             } 
             
+            // Nur XML- und PDF-Requests
             if (!requestUrl.toString().contains("/url/")) {
                 {
                     var check = new ResponseContentTypeCheck();
                     var result = check.run(response);
                     probeResult.addResult(result);
                 }
+            }
+            
+            // Nur XML-Requests
+            if (!(requestUrl.toString().contains("/url/") || requestUrl.toString().contains("/pdf/"))) { 
                 {
                     var check = new SchemaCheck();
                     var result = check.run(response);
@@ -63,6 +69,15 @@ public class GetExtractByIdProbe extends Probe implements IProbe {
                     probeResult.addResult(result);
                 }
             }  
+            
+            // Nur PDF-Requests
+            if (requestUrl.toString().contains("/pdf/")) {
+                {
+                    var check = new PdfFormatCheck();
+                    var result = check.run(response);
+                    probeResult.addResult(result);   
+                }
+            }
         } catch (InterruptedException e) { // TODO!!!
             e.printStackTrace();
         }  

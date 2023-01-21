@@ -19,6 +19,7 @@ public class GetExtractByIdWrapper {
     private List<String> requestTemplates = List.of(
             "/extract/xml/?EGRID=${EGRID}",
             "/extract/xml/?IDENTDN=${IDENTDN}&NUMBER=${NUMBER}",
+            "/extract/pdf/?EGRID=${EGRID}",
             "/extract/url/?EGRID=${EGRID}"
             );
     
@@ -50,7 +51,8 @@ public class GetExtractByIdWrapper {
                 for (var queryParameter : queryParameters) { 
                     var requestUrl = URI.create(requestUrlString + queryParameter);
                     
-                    if (requestUrl.toString().contains("/url/") && (requestUrl.toString().contains("GEOMETRY") || requestUrl.toString().contains("WITHIMAGES"))) {
+                    // Url- und pdf-Request dürfen nicht mit zusätzlichen Parametern geprüft werden.
+                    if ((requestUrl.toString().contains("/url/") || requestUrl.toString().contains("/pdf/")) && (requestUrl.toString().contains("GEOMETRY") || requestUrl.toString().contains("WITHIMAGES"))) {
                         continue;
                     }
 

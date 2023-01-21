@@ -1,7 +1,9 @@
 package ch.so.agi.oereb.cts;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -14,6 +16,8 @@ import org.junit.jupiter.api.Test;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import okio.Buffer;
+import okio.Okio;
 
 public class GetExtractByIdTest {
     private MockWebServer mockWebServer;
@@ -55,6 +59,104 @@ public class GetExtractByIdTest {
         } 
     }
     
+    @Test
+    public void extract_pdf_format_ok() throws IOException {
+        // Prepare 
+        var pdfFile = Paths.get("src/test/data/pdfa1a_ok.pdf").toFile();
+       
+        var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/pdf")
+                .setResponseCode(200)
+                .setBody(fileToBytes(pdfFile));
+
+        mockWebServer.enqueue(mockResponse);
+        
+        var request = "/extract/pdf/?EGRID=CH955832730623";
+        mockWebServer.url(request);
+        
+        var serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
+        var requestUrl = URI.create("http://" + serviceEndpoint + request);
+                
+        // Run test
+        var probe = new GetExtractByIdProbe();
+        var result = probe.run(requestUrl);
+        
+        // Validate
+        assertTrue(result.isSuccess());
+    }
+    
+    @Test
+    public void extract_pdf_format_fail() throws IOException {
+        // Prepare 
+        var pdfFile = Paths.get("src/test/data/pdfa1a_fail.pdf").toFile();
+       
+        var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/pdf")
+                .setResponseCode(200)
+                .setBody(fileToBytes(pdfFile));
+
+        mockWebServer.enqueue(mockResponse);
+        
+        var request = "/extract/pdf/?EGRID=CH767982496078";
+        mockWebServer.url(request);
+        
+        var serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
+        var requestUrl = URI.create("http://" + serviceEndpoint + request);
+                
+        // Run test
+        var probe = new GetExtractByIdProbe();
+        var result = probe.run(requestUrl);
+                
+        // Validate
+        assertFalse(result.isSuccess());
+        for (Result res : result.getResults()) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.PdfFormatCheck")) {
+                assertFalse(res.isSuccess());
+                break;
+            }
+        } 
+    }
+    
+    @Test
+    public void extract_pdf_responsecontenttype_fail() throws IOException {
+        // Prepare 
+        var pdfFile = Paths.get("src/test/data/pdfa1a_ok.pdf").toFile();
+       
+        var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/notpdf")
+                .setResponseCode(200)
+                .setBody(fileToBytes(pdfFile));
+
+        mockWebServer.enqueue(mockResponse);
+        
+        var request = "/extract/pdf/?EGRID=CH955832730623";
+        mockWebServer.url(request);
+        
+        var serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
+        var requestUrl = URI.create("http://" + serviceEndpoint + request);
+                
+        // Run test
+        var probe = new GetExtractByIdProbe();
+        var result = probe.run(requestUrl);
+        
+        // Validate
+        assertFalse(result.isSuccess());
+        for (Result res : result.getResults()) {
+            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.ResponseContentTypeCheck")) {
+                assertFalse(res.isSuccess());
+                break;
+            }
+        } 
+    }
+
+    private Buffer fileToBytes(File file) throws IOException {
+        Buffer result = new Buffer();
+        result.writeAll(Okio.source(file));
+        return result;
+    }
+
+    
+    
     //@Test
     public void foo() throws IOException {
 
@@ -67,36 +169,6 @@ public class GetExtractByIdTest {
             for (Result result : results) {
                 System.out.println(result);
             }
-        }
-        
-        {
-//            var parameters = Map.of("EGRID","CH427890824980");
-//            var wrapper = new GetExtractByIdWrapper();
-//            List<Result> results = wrapper.run("https://oereb.geo.bl.ch/", parameters);
-//
-//            for (Result result : results) {
-//                //var resultXml = xmlMapper.writeValueAsString(result);
-//                System.out.println(result);
-//            }
-        }
-      
-//        {
-//            //var parameters = Map.of("EN","2694124,1180546","IDENTDN","UR0200001216","NUMBER","112");
-//            var parameters = Map.of("EGRID","CH727993074655");
-//            var wrapper = new GetExtractByIdWrapper();
-//            List<Result> result = wrapper.run("https://prozessor-oereb.ur.ch/oereb/", parameters);
-//            
-//            String resultXml = xmlMapper.writeValueAsString(result);
-//            System.out.println(resultXml);
-//        }
-        
-//        {
-//            var parameters = Map.of("EGRID","CH356489796755");
-//            var wrapper = new GetExtractByIdWrapper();
-//            List<Result> result = wrapper.run("https://api.oereb.bs.ch/", parameters);
-//            
-//            String resultXml = xmlMapper.writeValueAsString(result);
-//            System.out.println(resultXml);
-//        }
+        }        
     }
 }
