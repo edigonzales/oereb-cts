@@ -16,6 +16,7 @@ Es werden sowohl Service- wie auch Dokumentenaspekte validiert.
   * siehe GetEGRID
   * Eingebettete Bilder gemäss Anfrage
   * Sind alle Bundesthemen im ToC enthalten?
+  * Ist das PDF/A formatkonform?
 
 ## Komponenten
 
