@@ -59,6 +59,7 @@ public class PdfFormatCheck extends Check implements ICheck {
             }
         } catch (ModelParsingException | EncryptedPdfException | IOException | ValidationException e) {
             result.setSuccess(false);
+            result.setMessage(e.getMessage());
             return result;  
         } 
         
