@@ -112,6 +112,7 @@ distTar {
     archiveBaseName = myArtifactId
 }
 
+/*
 distributions {
     nativeImage {
         contents {
@@ -123,6 +124,7 @@ distributions {
 nativeImageDistZip {
     archiveName myArtifactId + '-' + project.version.toString() + '-' + getOperatingSystemName() + '-' + getArchitectureName() + ".zip"
 }
+*/
 
 tasks.named('test') {
     useJUnitPlatform()
@@ -146,7 +148,7 @@ jreleaser {
         authors = ['edigonzales']
         license = 'MIT'
         docsUrl = 'https://github.com/edigonzales/oereb-cts'
-        copyright = '2022 Stefan Ziegler'
+        copyright = '2023 Stefan Ziegler'
     }
     release {
         github {
@@ -168,6 +170,7 @@ jreleaser {
                 version = '17'
             }
         }
+        /*
         appNative {
             distributionType = 'NATIVE_IMAGE'
             stereotype = 'CLI'
@@ -184,9 +187,11 @@ jreleaser {
                 platform = 'windows'
             }
         }
+        */
     }
 }
 
+/*
 def getOperatingSystemName() {
     def os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem; 
     def osName = os.getName().toLowerCase();
@@ -207,3 +212,4 @@ def getArchitectureName() {
     def archName = arch.getName().toLowerCase();
     return archName;    
 }
+*/

@@ -30,12 +30,6 @@ Das Unterprojekt `lib` beinhaltet die eigentlichen Prüfroutinen. Das Unterproje
 ./bin/oereb-cts --help
 ```
 
-### Native Image
-
-```
-./oereb-cts --help
-```
-
 Parameter:
 
 - `config`: Die Konfigurationsdatei mit Angaben des Serverendpunktes, Koordinaten, EGRID etc.
@@ -55,11 +49,16 @@ EGRID=CH807306583219
 Vollständiger Aufruf:
 
 ```
-./oereb-cts --config config.ini --out C:\Users\dummy\tmp\
+./bin/oereb-cts --config config.ini --out C:\Users\dummy\tmp\
 ```
 
 
 Die Prüfungen benötigen ein Service-Request-URL. Diese Requests sind ein String-Template  parametrisiert. Es wird versucht aus der Config-Datei alle für die jeweilige Prüfung Parameter zu ersetzen. Gelingt dies, wird der Test durchgeführt. Gelingt dies nicht, wird der Test nicht durchgeführt. Mit diesem Ansatz können jedoch für den GetEGRID-Request keine anderen Werte für `IDENTDN` und `NUMBER` als für den Extract-Request verwendet. Man müsste eine weitere Gruppe in der Config-Datei einführen (z.B. `[SO2]`).
+
+### Native Image
+
+Seit der Prüfung des PDF funktioniert das Native Image nicht mehr, weil die Prüf-Bibliothek Nashorn verwendet. Nashorn ist nicht mit GraalVM Native Image kompatibel: https://github.com/oracle/graal/issues/4416
+
 
 ### Logging
 
