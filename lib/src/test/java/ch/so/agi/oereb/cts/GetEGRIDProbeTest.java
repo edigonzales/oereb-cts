@@ -26,9 +26,9 @@ public class GetEGRIDProbeTest {
     @Test
     public void getegrid_en_ok() throws IOException {
         // Prepare 
-        var xmlResponse = Files.readString(Paths.get("src/test/data/getegrid_en_ok.xml"));
+        String xmlResponse = Files.readString(Paths.get("src/test/data/getegrid_en_ok.xml"));
        
-        var mockResponse = new MockResponse()
+        MockResponse mockResponse = new MockResponse()
                 .addHeader("Content-Type", "application/xml")
                 .setResponseCode(200)
                 .setBody(xmlResponse);
@@ -36,15 +36,15 @@ public class GetEGRIDProbeTest {
 
         mockWebServer.enqueue(mockResponse);
         
-        var request = "/getegrid/xml/?EN=2600589,1215498";
+        String request = "/getegrid/xml/?EN=2600589,1215498";
         mockWebServer.url(request);
         
-        var serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
-        var requestUrl = URI.create("http://" + serviceEndpoint + "/" + request);
+        URI serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
+        URI requestUrl = URI.create("http://" + serviceEndpoint + "/" + request);
         
         // Run test
-        var probe = new GetEGRIDProbe();
-        var result = probe.run(requestUrl);
+        GetEGRIDProbe probe = new GetEGRIDProbe();
+        Result result = probe.run(requestUrl);
         
 //        for (Result res : result.getResults()) {
 //            System.out.println(res.toString());
