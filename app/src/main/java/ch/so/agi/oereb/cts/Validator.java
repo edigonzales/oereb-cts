@@ -56,136 +56,136 @@ public class Validator {
     }
     
     public void run(String config, String outDirectory) throws InvalidFileFormatException, IOException, XMLStreamException, SaxonApiException {
-        var configFile = new File(config);
-        var ini = new Ini(configFile);
-
-        var iniSet = ini.entrySet();    // Exception    
-        for (var sectionMap : iniSet) {  
-            //log.info(sectionMap.getKey());
-            
-            var results = new ArrayList<Result>();
-
-            var section = sectionMap.getValue();
-            var serviceEndpoint = section.get("SERVICE_ENDPOINT");
-            
-            if (serviceEndpoint == null) {
-                throw new IllegalArgumentException("Service endpoint is missing.");
-            }
-            
-            var params = new HashMap<String,String>();
-            params.put("identifier", sectionMap.getKey());
-            
-            if (section.containsKey("EN")) {
-                params.put("EN", section.get("EN"));
-            }
-            if (section.containsKey("IDENTDN")) {
-                params.put("IDENTDN", section.get("IDENTDN"));
-            }
-            if (section.containsKey("NUMBER")) {
-                params.put("NUMBER", section.get("NUMBER"));
-            }
-            if (section.containsKey("EGRID")) {
-                params.put("EGRID", section.get("EGRID"));
-            }
-            
-            if (params.size() == 0) {
-                throw new IllegalArgumentException("No test parameters defined.");
-            }
-
-            log.info("Validating service endpoint: " + serviceEndpoint + " ("+sectionMap.getKey()+")");
-              
-            {
-                // Capabilities-Prüfungen
-                var wrapper = new GetCapabilitiesWrapper();
-                var probeResults = wrapper.run(serviceEndpoint, params);
-                results.addAll(probeResults);
-            }
-
-            {
-                // Versions-Prüfungen
-                var wrapper = new GetVersionsWrapper();
-                var probeResults = wrapper.run(serviceEndpoint, params);
-                results.addAll(probeResults);
-            }
-
-            {
-                // GetEGRID-Prüfungen
-                var wrapper = new GetEGRIDWrapper();
-                var probeResults = wrapper.run(serviceEndpoint, params);
-                results.addAll(probeResults);
-            }
-            
-            {
-                // Extract-Prüfungen
-                var wrapper = new GetExtractByIdWrapper();
-                var probeResults = wrapper.run(serviceEndpoint, params);
-                results.addAll(probeResults);
-            }            
-
-            resultsMap.put(sectionMap.getKey(), results);            
-        }
-        
-        // TODO: result.xml pro sectionMap.getKey 
-        var resultXmlFile = Paths.get(outDirectory, "result.xml").toFile();
-        var xof = XMLOutputFactory.newFactory();
-        var xsw = xof.createXMLStreamWriter(new FileWriter(resultXmlFile));
-        xsw.writeStartDocument("utf-8", "1.0");
-        xsw.writeStartElement("results");
-
-        for (var entry : resultsMap.entrySet()) {
-            for (Result result : entry.getValue()) {
-                xmlMapper.writeValue(xsw, result);
-    
-                String fileName = new File(result.getResultFileLocation()).getName();
-                Files.copy(Path.of(result.getResultFileLocation()), Path.of(outDirectory, fileName), StandardCopyOption.REPLACE_EXISTING);            
-            }
-        }
-        
-        xsw.writeEndElement();
-        xsw.writeEndDocument();
-        xsw.flush();
-        xsw.close();        
-        
-        var resultHtmlFile = Paths.get(outDirectory, "result.html").toFile();
-        
-        String XML2PDF_XSL = "xml2html.xsl";
-        File xsltFile = new File(Paths.get(outDirectory, XML2PDF_XSL).toFile().getAbsolutePath());
-        InputStream xsltFileInputStream = Validator.class.getResourceAsStream("/"+XML2PDF_XSL); 
-        Files.copy(xsltFileInputStream, xsltFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        xsltFileInputStream.close();
-
-        Processor proc = new Processor(false);
-        XsltCompiler comp = proc.newXsltCompiler();
-        XsltExecutable exp = comp.compile(new StreamSource(xsltFile));
-        
-        XdmNode source = proc.newDocumentBuilder().build(new StreamSource(resultXmlFile));
-        Serializer outHtml = proc.newSerializer(resultHtmlFile);
-        XsltTransformer trans = exp.load();
-        trans.setInitialContextNode(source);
-        trans.setDestination(outHtml);
-        trans.transform();
-        trans.close();
+//        var configFile = new File(config);
+//        var ini = new Ini(configFile);
+//
+//        var iniSet = ini.entrySet();    // Exception    
+//        for (var sectionMap : iniSet) {  
+//            //log.info(sectionMap.getKey());
+//            
+//            var results = new ArrayList<Result>();
+//
+//            var section = sectionMap.getValue();
+//            var serviceEndpoint = section.get("SERVICE_ENDPOINT");
+//            
+//            if (serviceEndpoint == null) {
+//                throw new IllegalArgumentException("Service endpoint is missing.");
+//            }
+//            
+//            var params = new HashMap<String,String>();
+//            params.put("identifier", sectionMap.getKey());
+//            
+//            if (section.containsKey("EN")) {
+//                params.put("EN", section.get("EN"));
+//            }
+//            if (section.containsKey("IDENTDN")) {
+//                params.put("IDENTDN", section.get("IDENTDN"));
+//            }
+//            if (section.containsKey("NUMBER")) {
+//                params.put("NUMBER", section.get("NUMBER"));
+//            }
+//            if (section.containsKey("EGRID")) {
+//                params.put("EGRID", section.get("EGRID"));
+//            }
+//            
+//            if (params.size() == 0) {
+//                throw new IllegalArgumentException("No test parameters defined.");
+//            }
+//
+//            log.info("Validating service endpoint: " + serviceEndpoint + " ("+sectionMap.getKey()+")");
+//              
+//            {
+//                // Capabilities-Prüfungen
+//                var wrapper = new GetCapabilitiesWrapper();
+//                var probeResults = wrapper.run(serviceEndpoint, params);
+//                results.addAll(probeResults);
+//            }
+//
+//            {
+//                // Versions-Prüfungen
+//                var wrapper = new GetVersionsWrapper();
+//                var probeResults = wrapper.run(serviceEndpoint, params);
+//                results.addAll(probeResults);
+//            }
+//
+//            {
+//                // GetEGRID-Prüfungen
+//                var wrapper = new GetEGRIDWrapper();
+//                var probeResults = wrapper.run(serviceEndpoint, params);
+//                results.addAll(probeResults);
+//            }
+//            
+//            {
+//                // Extract-Prüfungen
+//                var wrapper = new GetExtractByIdWrapper();
+//                var probeResults = wrapper.run(serviceEndpoint, params);
+//                results.addAll(probeResults);
+//            }            
+//
+//            resultsMap.put(sectionMap.getKey(), results);            
+//        }
+//        
+//        // TODO: result.xml pro sectionMap.getKey 
+//        var resultXmlFile = Paths.get(outDirectory, "result.xml").toFile();
+//        var xof = XMLOutputFactory.newFactory();
+//        var xsw = xof.createXMLStreamWriter(new FileWriter(resultXmlFile));
+//        xsw.writeStartDocument("utf-8", "1.0");
+//        xsw.writeStartElement("results");
+//
+//        for (var entry : resultsMap.entrySet()) {
+//            for (Result result : entry.getValue()) {
+//                xmlMapper.writeValue(xsw, result);
+//    
+//                String fileName = new File(result.getResultFileLocation()).getName();
+//                Files.copy(Path.of(result.getResultFileLocation()), Path.of(outDirectory, fileName), StandardCopyOption.REPLACE_EXISTING);            
+//            }
+//        }
+//        
+//        xsw.writeEndElement();
+//        xsw.writeEndDocument();
+//        xsw.flush();
+//        xsw.close();        
+//        
+//        var resultHtmlFile = Paths.get(outDirectory, "result.html").toFile();
+//        
+//        String XML2PDF_XSL = "xml2html.xsl";
+//        File xsltFile = new File(Paths.get(outDirectory, XML2PDF_XSL).toFile().getAbsolutePath());
+//        InputStream xsltFileInputStream = Validator.class.getResourceAsStream("/"+XML2PDF_XSL); 
+//        Files.copy(xsltFileInputStream, xsltFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//        xsltFileInputStream.close();
+//
+//        Processor proc = new Processor(false);
+//        XsltCompiler comp = proc.newXsltCompiler();
+//        XsltExecutable exp = comp.compile(new StreamSource(xsltFile));
+//        
+//        XdmNode source = proc.newDocumentBuilder().build(new StreamSource(resultXmlFile));
+//        Serializer outHtml = proc.newSerializer(resultHtmlFile);
+//        XsltTransformer trans = exp.load();
+//        trans.setInitialContextNode(source);
+//        trans.setDestination(outHtml);
+//        trans.transform();
+//        trans.close();
 
     }
     
-    // Glaubs keine gute Idee. Die Klasse ist bloss zuständig für die Prüfung und das
-    // Herstellen der Resultate-Files.
-    // Mmmmh, wenn ich aber die Lib in Spring Boot verwende, wer macht mir das XML???
-    @Deprecated(forRemoval = true)
-    public HashMap<String, Boolean> getSummary() {
-        if (summaryMap != null) {
-            return summaryMap;
-        }
-        
-        summaryMap = new HashMap<String,Boolean>();
-        
-        for (var entry : resultsMap.entrySet()) {
-            log.info(entry.getKey());
-            for (Result result : entry.getValue()) {
-                summaryMap.put(entry.getKey(), result.isSuccess());
-            }
-        }
-
-        return summaryMap;
-    }
+//    // Glaubs keine gute Idee. Die Klasse ist bloss zuständig für die Prüfung und das
+//    // Herstellen der Resultate-Files.
+//    // Mmmmh, wenn ich aber die Lib in Spring Boot verwende, wer macht mir das XML???
+//    @Deprecated(forRemoval = true)
+//    public HashMap<String, Boolean> getSummary() {
+//        if (summaryMap != null) {
+//            return summaryMap;
+//        }
+//        
+//        summaryMap = new HashMap<String,Boolean>();
+//        
+//        for (var entry : resultsMap.entrySet()) {
+//            log.info(entry.getKey());
+//            for (Result result : entry.getValue()) {
+//                summaryMap.put(entry.getKey(), result.isSuccess());
+//            }
+//        }
+//
+//        return summaryMap;
+//    }
 }
