@@ -39,10 +39,7 @@ public class Validator {
     private static Logger log = LoggerFactory.getLogger(Main.class);
 
     XmlMapper xmlMapper;
-    
-    @Deprecated
-    HashMap<String, Boolean> summaryMap;
-    
+        
     HashMap<String, List<Result>> resultsMap = new HashMap<>();
 
     public Validator() {
