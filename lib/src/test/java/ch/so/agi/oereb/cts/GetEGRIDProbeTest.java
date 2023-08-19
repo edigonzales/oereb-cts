@@ -46,6 +46,10 @@ public class GetEGRIDProbeTest {
         var probe = new GetEGRIDProbe();
         var result = probe.run(requestUrl);
         
+//        result.setIdentifier("MyIdentifier");
+//        System.out.println(result.toIomObject());
+        
+        
 //        for (Result res : result.getResults()) {
 //            System.out.println(res.toString());
 //        } 

@@ -4,10 +4,21 @@ import java.io.Serializable;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import ch.interlis.iom.IomObject;
+import ch.interlis.iom_j.Iom_jObject;
 
 public class Result implements Serializable {
+    private static final String MODEL_NAME = "SO_AGI_OEREB_CTS_20230819";
+    private static final String ILI_TOPIC = MODEL_NAME+".Results";
+    private static final String TAG_PROBE_RESULT = MODEL_NAME + ".Results.ProbeResult";
+    private static final String TAG_CHECK_RESULT = MODEL_NAME + ".CheckResult";
+
     private static final long serialVersionUID = 1L;
 
     protected String identifier;
@@ -162,7 +173,35 @@ public class Result implements Serializable {
         
         this.processingTimeSecs = Duration.between(startTime, endTime).toMillis() / 1000.0;
     }
-
+    
+    
+    public IomObject toIomObject() {
+        Iom_jObject iomObj = new Iom_jObject(TAG_PROBE_RESULT, this.identifier + "." + this.className);
+        iomObj.setattrvalue("identifier", this.identifier);
+        iomObj.setattrvalue("className", this.className);
+        iomObj.setattrvalue("success", Boolean.valueOf(this.success).toString());
+        iomObj.setattrvalue("serviceEndpoint", this.serviceEndpoint.toString());
+        iomObj.setattrvalue("request", this.request.toString());
+        iomObj.setattrvalue("startTime", this.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
+        iomObj.setattrvalue("endTime", this.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
+        iomObj.setattrvalue("processingTimeSecs", String.valueOf(this.processingTimeSecs));
+        iomObj.setattrvalue("resultFileLocation", this.resultFileLocation);
+        
+        for (Result result : this.results) {
+            Iom_jObject checkIomStruct = new Iom_jObject(TAG_CHECK_RESULT, null);
+            checkIomStruct.setattrvalue("className", result.className);
+            checkIomStruct.setattrvalue("description", result.description);
+            checkIomStruct.setattrvalue("success", Boolean.valueOf(result.success).toString());
+            if (result.statusCode != null) checkIomStruct.setattrvalue("statusCode", String.valueOf(result.statusCode));
+            checkIomStruct.setattrvalue("startTime", result.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
+            checkIomStruct.setattrvalue("endTime", result.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
+            checkIomStruct.setattrvalue("processingTimeSecs", String.valueOf(result.processingTimeSecs));            
+            iomObj.addattrobj("checkResults", checkIomStruct);
+        }
+        
+        return iomObj;
+    }
+    
     @Override
     public String toString() {
         return "Result [className=" + className + ", description=" + description + ", serviceEndpoint="

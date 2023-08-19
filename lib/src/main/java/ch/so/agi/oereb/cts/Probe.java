@@ -46,7 +46,7 @@ import net.sf.saxon.s9api.XdmNode;
 public abstract class Probe {
     protected static String FOLDER_PREFIX = "oerebcts";
         
-    private String createFileName(URI requestUrl) {
+    private String createFileNameFromUrl(URI requestUrl) {
         String fileName = requestUrl
                 .toString()
                 .replace("https://", "")
@@ -59,7 +59,7 @@ public abstract class Probe {
                     .replace(",", "-")
                     .toLowerCase();
         
-        if (requestUrl.toString().contains("/xml/")) {
+        if (requestUrl.toString().contains("/xml")) {
             fileName += ".xml";
         } else if (requestUrl.toString().contains("/pdf/")) {
             fileName += ".pdf";
@@ -70,7 +70,7 @@ public abstract class Probe {
     }
     
     private HttpClient createHttpClient() {
-        var httpClient = HttpClient.newBuilder()
+        HttpClient httpClient = HttpClient.newBuilder()
                 .version(Version.HTTP_1_1)
                 .followRedirects(Redirect.NEVER)
                 .build();
@@ -78,17 +78,17 @@ public abstract class Probe {
     }
 
     protected HttpResponse<Path> makeRequest(File workFolder, URI requestUrl, Result result) throws IOException, HttpTimeoutException, InterruptedException {
-        var requestBuilder = HttpRequest.newBuilder();
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
         requestBuilder.GET().uri(requestUrl);
 
-        var request = requestBuilder.timeout(Duration.ofMinutes(2L)).build();
-        var httpClient = createHttpClient();
+        HttpRequest request = requestBuilder.timeout(Duration.ofMinutes(2L)).build();
+        HttpClient httpClient = createHttpClient();
         
-        var fileName = createFileName(requestUrl);
-        var responseFile = Paths.get(workFolder.getAbsolutePath(), fileName);      
+        String fileName = createFileNameFromUrl(requestUrl);
+        Path responseFile = Paths.get(workFolder.getAbsolutePath(), fileName);      
         
         result.start();
-        var response = httpClient.send(request, HttpResponse.BodyHandlers.ofFile(responseFile));
+        HttpResponse<Path> response = httpClient.send(request, HttpResponse.BodyHandlers.ofFile(responseFile));
         result.stop();
         
         return response;

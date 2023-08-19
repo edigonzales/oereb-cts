@@ -13,20 +13,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 // Den Wrapper bräuchte es eigentlich nicht, da es keine Kombinationen von Requests gibt.
-public class GetCapabilitiesWrapper {
-    final Logger log = LoggerFactory.getLogger(GetCapabilitiesWrapper.class);
+public class GetCapabilitiesMethod {
+    final Logger log = LoggerFactory.getLogger(GetCapabilitiesMethod.class);
 
     public List<Result> run(String serviceEndpoint, Map<String, String> parameters) {
         List<Result> resultList = new ArrayList<Result>();
 
         try {
-            var requestUrlString = URLDecoder.decode(serviceEndpoint + "/capabilities/xml", StandardCharsets.UTF_8.name());
+            String requestUrlString = URLDecoder.decode(serviceEndpoint + "/capabilities/xml", StandardCharsets.UTF_8.name());
             requestUrlString = Utils.fixUrl(requestUrlString);
             
-            var requestUrl = URI.create(requestUrlString);
+            URI requestUrl = URI.create(requestUrlString);
             
-            var probe = new GetCapabilitiesProbe();
-            var probeResult = probe.run(requestUrl);
+            GetCapabilitiesProbe probe = new GetCapabilitiesProbe();
+            Result probeResult = probe.run(requestUrl);
             probeResult.setIdentifier(parameters.get("identifier"));
 
             resultList.add(probeResult);

@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
-public class GetVersionsTest {
+public class GetVersionsProbeTest {
     private MockWebServer mockWebServer;
 
     @BeforeEach

@@ -19,7 +19,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import okio.Buffer;
 import okio.Okio;
 
-public class GetExtractByIdTest {
+public class GetExtractByIdProbeTest {
     private MockWebServer mockWebServer;
 
     @BeforeEach
@@ -163,7 +163,7 @@ public class GetExtractByIdTest {
         {
             //var parameters = Map.of("EN","2600595,1215629","IDENTDN","SO0200002457","NUMBER","168");
             var parameters = Map.of("EGRID","CH807306583219");
-            var wrapper = new GetExtractByIdWrapper();
+            var wrapper = new GetExtractByIdMethod();
             List<Result> results = wrapper.run("https://geo.so.ch/api/oereb/", parameters);
 
             for (Result result : results) {

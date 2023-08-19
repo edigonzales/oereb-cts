@@ -59,7 +59,7 @@ public class Validator {
         var configFile = new File(config);
         var ini = new Ini(configFile);
 
-        var iniSet = ini.entrySet();    // Exception    
+        var iniSet = ini.entrySet();       
         for (var sectionMap : iniSet) {  
             //log.info(sectionMap.getKey());
             
@@ -96,28 +96,28 @@ public class Validator {
               
             {
                 // Capabilities-Prüfungen
-                var wrapper = new GetCapabilitiesWrapper();
+                var wrapper = new GetCapabilitiesMethod();
                 var probeResults = wrapper.run(serviceEndpoint, params);
                 results.addAll(probeResults);
             }
 
             {
                 // Versions-Prüfungen
-                var wrapper = new GetVersionsWrapper();
+                var wrapper = new GetVersionsMethod();
                 var probeResults = wrapper.run(serviceEndpoint, params);
                 results.addAll(probeResults);
             }
 
             {
                 // GetEGRID-Prüfungen
-                var wrapper = new GetEGRIDWrapper();
+                var wrapper = new GetEGRIDMethod();
                 var probeResults = wrapper.run(serviceEndpoint, params);
                 results.addAll(probeResults);
             }
             
             {
                 // Extract-Prüfungen
-                var wrapper = new GetExtractByIdWrapper();
+                var wrapper = new GetExtractByIdMethod();
                 var probeResults = wrapper.run(serviceEndpoint, params);
                 results.addAll(probeResults);
             }            
@@ -166,26 +166,5 @@ public class Validator {
         trans.transform();
         trans.close();
 
-    }
-    
-    // Glaubs keine gute Idee. Die Klasse ist bloss zuständig für die Prüfung und das
-    // Herstellen der Resultate-Files.
-    // Mmmmh, wenn ich aber die Lib in Spring Boot verwende, wer macht mir das XML???
-    @Deprecated(forRemoval = true)
-    public HashMap<String, Boolean> getSummary() {
-        if (summaryMap != null) {
-            return summaryMap;
-        }
-        
-        summaryMap = new HashMap<String,Boolean>();
-        
-        for (var entry : resultsMap.entrySet()) {
-            log.info(entry.getKey());
-            for (Result result : entry.getValue()) {
-                summaryMap.put(entry.getKey(), result.isSuccess());
-            }
-        }
-
-        return summaryMap;
-    }
+    }    
 }

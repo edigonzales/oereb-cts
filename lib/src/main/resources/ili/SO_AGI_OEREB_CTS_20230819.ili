@@ -1,0 +1,49 @@
+INTERLIS 2.3;
+
+/** !!------------------------------------------------------------------------------
+ *  !! Version    | wer | Änderung
+ *  !!------------------------------------------------------------------------------
+ *  !! 2023-08-19 | sz  | Ersterfassung
+ *  !!==============================================================================
+ */
+!!@ technicalContact=mailto:agi@bd.so.ch
+!!@ furtherInformation=http://geo.so.ch/models/AGI/SO_AGI_OEREB_CTS_20230819.uml
+
+MODEL SO_AGI_OEREB_CTS_20230819 (de)
+AT "https://agi.so.ch"
+VERSION "2023-08-19" =
+
+  DOMAIN 
+    SOOID = OID TEXT*255;
+
+  STRUCTURE Result (ABSTRACT) =
+    className : MANDATORY TEXT;
+    success : MANDATORY BOOLEAN;
+    startTime : MANDATORY FORMAT INTERLIS.XMLDateTime "2000-01-01T00:00:00.000" .. "2100-12-31T23:59:59.999";
+    endTime : MANDATORY FORMAT INTERLIS.XMLDateTime "2000-01-01T00:00:00.000" .. "2100-12-31T23:59:59.999";
+    processingTimeSecs : MANDATORY 0.000 .. 3600.000 [INTERLIS.s];
+  END Result;
+
+  STRUCTURE CheckResult EXTENDS Result =
+    description : TEXT;
+    statusCode : 100 .. 999;
+  END CheckResult;
+
+  STRUCTURE ProbeResult EXTENDS Result =
+    identifier : MANDATORY TEXT;
+    serviceEndpoint : MANDATORY URI;
+    request : MANDATORY URI;
+    resultFileLocation : MANDATORY TEXT;
+    checkResults : BAG {1..*} OF SO_AGI_OEREB_CTS_20230819.CheckResult;
+  END ProbeResult;
+
+  TOPIC Results =
+    OID AS SO_AGI_OEREB_CTS_20230819.SOOID;
+
+    CLASS ProbeResult EXTENDS SO_AGI_OEREB_CTS_20230819.ProbeResult =
+      UNIQUE identifier;
+    END ProbeResult;
+
+  END Results;
+
+END SO_AGI_OEREB_CTS_20230819.

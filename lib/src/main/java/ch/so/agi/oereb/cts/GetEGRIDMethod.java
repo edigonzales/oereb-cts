@@ -13,8 +13,8 @@ import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GetEGRIDWrapper {
-    final Logger log = LoggerFactory.getLogger(GetEGRIDWrapper.class);
+public class GetEGRIDMethod {
+    final Logger log = LoggerFactory.getLogger(GetEGRIDMethod.class);
 
     private List<String> requestTemplates = List.of(
             "/getegrid/xml/?EN=${EN}",
@@ -30,8 +30,8 @@ public class GetEGRIDWrapper {
     public List<Result> run(String serviceEndpoint, Map<String,String> parameters) {
         List<Result> resultList = new ArrayList<Result>();
 
-        for (var requestTemplate : requestTemplates) {
-            var subsitutor = new StringSubstitutor(parameters);
+        for (String requestTemplate : requestTemplates) {
+            StringSubstitutor subsitutor = new StringSubstitutor(parameters);
             subsitutor.setEnableUndefinedVariableException(true);
             String resolvedRequestTemplate = null;
             try {
@@ -43,14 +43,14 @@ public class GetEGRIDWrapper {
             }
             
             try {
-                var requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
+                String requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
                 requestUrlString = Utils.fixUrl(requestUrlString);
                 
-                for (var queryParameter : queryParameters) { 
-                    var requestUrl = URI.create(requestUrlString + queryParameter);
+                for (String queryParameter : queryParameters) { 
+                    URI requestUrl = URI.create(requestUrlString + queryParameter);
 
-                    var probe = new GetEGRIDProbe();
-                    var probeResult = probe.run(requestUrl);
+                    GetEGRIDProbe probe = new GetEGRIDProbe();
+                    Result probeResult = probe.run(requestUrl);
                     probeResult.setIdentifier(parameters.get("identifier"));
                     
                     resultList.add(probeResult);

@@ -13,8 +13,8 @@ import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GetExtractByIdWrapper {
-    final Logger log = LoggerFactory.getLogger(GetEGRIDWrapper.class);
+public class GetExtractByIdMethod {
+    final Logger log = LoggerFactory.getLogger(GetEGRIDMethod.class);
 
     private List<String> requestTemplates = List.of(
             "/extract/xml/?EGRID=${EGRID}",
@@ -34,8 +34,8 @@ public class GetExtractByIdWrapper {
     public List<Result> run(String serviceEndpoint, Map<String, String> parameters) {
         List<Result> resultList = new ArrayList<Result>();
 
-        for (var requestTemplate : requestTemplates) {
-            var subsitutor = new StringSubstitutor(parameters);
+        for (String requestTemplate : requestTemplates) {
+            StringSubstitutor subsitutor = new StringSubstitutor(parameters);
             subsitutor.setEnableUndefinedVariableException(true);
             String resolvedRequestTemplate = null;
             try {
@@ -45,19 +45,19 @@ public class GetExtractByIdWrapper {
             }
 
             try {
-                var requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
+                String requestUrlString = URLDecoder.decode(serviceEndpoint + "/" + resolvedRequestTemplate, StandardCharsets.UTF_8.name());
                 requestUrlString = Utils.fixUrl(requestUrlString);
                 
-                for (var queryParameter : queryParameters) { 
-                    var requestUrl = URI.create(requestUrlString + queryParameter);
+                for (String queryParameter : queryParameters) { 
+                    URI requestUrl = URI.create(requestUrlString + queryParameter);
                     
-                    // Url- und pdf-Request dürfen nicht mit zusätzlichen Parametern geprüft werden.
+                    // Url- und Pdf-Requests dürfen nicht mit zusätzlichen Parametern geprüft werden.
                     if ((requestUrl.toString().contains("/url/") || requestUrl.toString().contains("/pdf/")) && (requestUrl.toString().contains("GEOMETRY") || requestUrl.toString().contains("WITHIMAGES"))) {
                         continue;
                     }
 
-                    var probe = new GetExtractByIdProbe();
-                    var probeResult = probe.run(requestUrl);
+                    GetExtractByIdProbe probe = new GetExtractByIdProbe();
+                    Result probeResult = probe.run(requestUrl);
                     probeResult.setIdentifier(parameters.get("identifier"));
 
                     resultList.add(probeResult);
