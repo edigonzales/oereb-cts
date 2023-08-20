@@ -16,8 +16,6 @@ public class MainTest {
         int ret = Main.mainWithExitCode(args);
         assertEquals(2, ret);
         
-        System.out.println(ret);
-        
 //        Assertions.assertThrows(
 //                Exception.class,
 //                () -> Main.mainWithExitCode(args)
