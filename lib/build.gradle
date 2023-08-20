@@ -37,7 +37,7 @@ dependencies {
     implementation 'ch.interlis:ili2c-tool:5.3.3'
     implementation 'ch.interlis:iox-ili:1.21.18'
     implementation 'net.sf.saxon:Saxon-HE:11.4' 
-    implementation 'org.verapdf:validation-model:1.24.1' // supports jakarta
+    implementation 'org.verapdf:validation-model:1.24.1' // Supports jakarta aber wie es funktioniert, weiss ich noch nicht.
     //implementation 'org.verapdf:pdfbox-validation-model:1.22.2'   
 }
 
@@ -54,7 +54,6 @@ tasks.register('externalTest', Test) {
         includeTags 'external'
     }
 }
-
 
 project.archivesBaseName = myArtifactId
 

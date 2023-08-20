@@ -82,9 +82,6 @@ public class GetExtractByIdProbeTest {
         var result = probe.run(requestUrl);
         
         // Validate
-        
-        System.out.println(result.message);
-        
         assertTrue(result.isSuccess());
     }
     

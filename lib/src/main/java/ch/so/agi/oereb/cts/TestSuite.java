@@ -41,6 +41,7 @@ public class TestSuite {
         log.info("Validating service endpoint: " + serviceEndpoint + " ("+params.get(PARAM_IDENTIFIER)+")");
 
         {
+            log.debug("validating capabilities");
             // Capabilities-Prüfungen
             GetCapabilitiesMethod method = new GetCapabilitiesMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
@@ -48,6 +49,7 @@ public class TestSuite {
         }
 
         {
+            log.debug("validating versions");
             // Versions-Prüfungen
             GetVersionsMethod method = new GetVersionsMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
@@ -55,6 +57,7 @@ public class TestSuite {
         }
 
         {
+            log.debug("validating getegrid");
             // GetEGRID-Prüfungen
             GetEGRIDMethod method = new GetEGRIDMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
@@ -62,6 +65,7 @@ public class TestSuite {
         }
         
         {
+            log.debug("validating extract");
             // Extract-Prüfungen
             GetExtractByIdMethod method = new GetExtractByIdMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
@@ -99,7 +103,7 @@ public class TestSuite {
     private File copyResourceToTmpDir(String resource) throws IOException {
         Path exportedFile = null;
         InputStream is = TestSuite.class.getClassLoader().getResourceAsStream(resource);
-        Path exportDir = Files.createTempDirectory("metapublisher");
+        Path exportDir = Files.createTempDirectory("oerebcts");
         exportedFile = exportDir.resolve(new File(resource).getName());
         Files.copy(is, exportedFile, StandardCopyOption.REPLACE_EXISTING);
         return exportedFile.toFile();

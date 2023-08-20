@@ -43,9 +43,7 @@ public class PdfFormatCheck extends Check implements ICheck {
         try (PDFAParser parser = Foundries.defaultInstance().createParser(new FileInputStream(pdfFile))) {            
             PDFAValidator validator = Foundries.defaultInstance().createValidator(parser.getFlavour(), false);
             ValidationResult res = validator.validate(parser);
-            
-            System.out.println(res);
-            
+                        
             if (res.isCompliant()) {
                 result.setSuccess(true);
                 result.stop();
