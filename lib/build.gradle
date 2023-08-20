@@ -19,7 +19,7 @@ compileJava {
 repositories {
     mavenCentral()
     maven { url "https://jars.interlis.ch" }
-    //maven { url "https://artifactory.openpreservation.org/artifactory/vera-dev/" }
+    maven { url "https://artifactory.openpreservation.org/artifactory/vera-dev/" }
 }
 
 // "The package javax.xml.xxx is accessible from more than one module: <unnamed>, java.xml"
@@ -37,7 +37,7 @@ dependencies {
     implementation 'ch.interlis:ili2c-tool:5.3.3'
     implementation 'ch.interlis:iox-ili:1.21.18'
     implementation 'net.sf.saxon:Saxon-HE:11.4' 
-    implementation 'org.verapdf:validation-model:1.22.2'
+    implementation 'org.verapdf:validation-model:1.24.1' // supports jakarta
     //implementation 'org.verapdf:pdfbox-validation-model:1.22.2'   
 }
 
