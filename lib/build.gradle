@@ -42,8 +42,19 @@ dependencies {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags 'external'
+    }
 }
+
+tasks.register('externalTest', Test) {
+    description = 'Runs tests with external dependencies'
+    group = 'verification'
+    useJUnitPlatform {
+        includeTags 'external'
+    }
+}
+
 
 project.archivesBaseName = myArtifactId
 

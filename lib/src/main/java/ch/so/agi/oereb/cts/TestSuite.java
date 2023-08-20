@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,14 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import ch.ehi.basics.settings.Settings;
 import ch.interlis.ili2c.Ili2c;
-import ch.interlis.ili2c.Ili2cException;
 import ch.interlis.ili2c.Ili2cFailure;
 import ch.interlis.ili2c.metamodel.TransferDescription;
-import ch.interlis.iom.IomObject;
-import ch.interlis.iom_j.Iom_jObject;
-import ch.interlis.iom_j.xtf.XtfReader;
 import ch.interlis.iom_j.xtf.XtfWriter;
-import ch.interlis.iox.IoxEvent;
 import ch.interlis.iox.IoxException;
 import ch.interlis.iox.IoxWriter;
 import ch.interlis.iox_j.ObjectEvent;
@@ -44,7 +38,7 @@ public class TestSuite {
         
         String serviceEndpoint = params.get(PARAM_SERVICE_ENDPOINT);
 
-        log.info("Validating service endpoint: " + serviceEndpoint + " ("+serviceEndpoint+")");
+        log.info("Validating service endpoint: " + serviceEndpoint + " ("+params.get(PARAM_IDENTIFIER)+")");
 
         {
             // Capabilities-Prüfungen
@@ -75,8 +69,6 @@ public class TestSuite {
         }            
         
         if (settings.getValue(SETTING_LOGFILE) != null) {
-            System.out.println("****** fubar");
-            
             File xtfFile = Paths.get(settings.getValue(SETTING_LOGFILE)).toFile();
 
             try {
@@ -87,12 +79,8 @@ public class TestSuite {
                 ioxWriter.write(new StartBasketEvent(ILI_TOPIC, params.get(TestSuite.PARAM_IDENTIFIER)));                
 
                 for (Result result : results) {
-                    System.out.println(result.toIomObject());
                     ioxWriter.write(new ObjectEvent(result.toIomObject()));
-
                 }
-                
-//                ioxWriter.write(new ObjectEvent(iomObj));
                 
                 ioxWriter.write(new EndBasketEvent());
                 ioxWriter.write(new EndTransferEvent());
@@ -103,8 +91,6 @@ public class TestSuite {
                 e.printStackTrace();
                 return null;
             }
-            
-
         }
         
         return results;

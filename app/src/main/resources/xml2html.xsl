@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ili="http://www.interlis.ch/INTERLIS2.3" version="3.0">
     <xsl:output encoding="UTF-8" indent="yes" method="html"/>
-    <xsl:template match="/results">
+    <xsl:template match="ili:SO_AGI_OEREB_CTS_20230819.Results">
         <html>
         <head>
             <title>ÖREB Compliance Test Suite</title>
@@ -223,30 +223,30 @@
                     ÖREB Compliance Test Suite: Results
                 </div>
 
-                <xsl:for-each-group select="result" group-by="serviceEndpoint">
+                <xsl:for-each-group select="ili:SO_AGI_OEREB_CTS_20230819.Results.ProbeResult" group-by="ili:serviceEndpoint">
                     <div class="header_left" style="background-color: white; font-weight: 700">
                         Service endpoint:
                     </div>
                     <div class="header_right" style="background-color: white; font-weight: 700;">
-                        <xsl:value-of select="serviceEndpoint"/>
+                        <xsl:value-of select="ili:serviceEndpoint"/>
                     </div>
 
-                    <xsl:for-each-group select="current-group()" group-by="className">
+                    <xsl:for-each-group select="current-group()" group-by="ili:className">
                         <div class="header_left">
                             Probe:
                         </div>
                         <div class="header_right">
-                            <xsl:value-of select="className"/>
+                            <xsl:value-of select="ili:className"/>
                         </div>
                         <xsl:for-each select="current-group()">
                             <div style="margin:-1px 0 0 -1px;">
                                 <details style="line-height: 2.0;">
                                     <xsl:choose>
-                                        <xsl:when test="success='true'">
-                                            <summary style="background-color: #92C5DE; border: 1px solid white; "><xsl:value-of select="request"/></summary>
+                                        <xsl:when test="ili:success='true'">
+                                            <summary style="background-color: #92C5DE; border: 1px solid white; "><xsl:value-of select="ili:request"/></summary>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <summary style="background-color: #FAA582; border: 1px solid white;"><xsl:value-of select="request"/></summary>
+                                            <summary style="background-color: #FAA582; border: 1px solid white;"><xsl:value-of select="ili:request"/></summary>
                                         </xsl:otherwise>
                                     </xsl:choose>
 
@@ -267,8 +267,8 @@
                                                     <xsl:attribute name="class">
                                                         <xsl:text>black-link</xsl:text>
                                                     </xsl:attribute>
-                                                    <xsl:attribute name="href"><xsl:value-of select="request"/></xsl:attribute>
-                                                    <xsl:value-of select="request"/>
+                                                    <xsl:attribute name="href"><xsl:value-of select="ili:request"/></xsl:attribute>
+                                                    <xsl:value-of select="ili:request"/>
                                                 </xsl:element>
 
                                             </td>
@@ -279,14 +279,14 @@
                                                 Request time (s):
                                             </td>
                                             <td>
-                                                <xsl:value-of select="processingTimeSecs"/>
+                                                <xsl:value-of select="ili:processingTimeSecs"/>
                                             </td>
                                         </tr>
                                     </table>
 
                                     <div class="line"></div>
 
-                                    <xsl:for-each select="checkResults/check">
+                                    <xsl:for-each select="ili:checkResults/ili:SO_AGI_OEREB_CTS_20230819.CheckResult">
                                         <table width="100%;" style="line-height: 1.5;">
                                             <colgroup>
                                             <col span="1" style="width: 15%;"/>
@@ -298,7 +298,7 @@
                                                     Check:
                                                 </td>
                                                 <td>
-                                                    <xsl:value-of select="className"/>
+                                                    <xsl:value-of select="ili:className"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -306,7 +306,7 @@
                                                     Description:
                                                 </td>
                                                 <td>
-                                                    <xsl:value-of select="description"/>
+                                                    <xsl:value-of select="ili:description"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -315,24 +315,24 @@
                                                 </td>
                                                 <td>
                                                     <xsl:choose>
-                                                        <xsl:when test="success='true'">
-                                                            <xsl:value-of select="success"/>
+                                                        <xsl:when test="ili:success='true'">
+                                                            <xsl:value-of select="ili:success"/>
                                                         </xsl:when>
                                                         <xsl:otherwise>
                                                             <span style="color: #FAA582; font-weight: 700;">
-                                                                <xsl:value-of select="success"/>
+                                                                <xsl:value-of select="ili:success"/>
                                                             </span>
                                                         </xsl:otherwise>
                                                     </xsl:choose>
                                                 </td>
                                             </tr>
-                                            <xsl:if test="statusCode">
+                                            <xsl:if test="ili:statusCode">
                                                 <tr>
                                                     <td>
                                                         Status code:
                                                     </td>
                                                     <td>
-                                                        <xsl:value-of select="statusCode"/>
+                                                        <xsl:value-of select="ili:statusCode"/>
                                                     </td>
                                                 </tr>
                                             </xsl:if>
@@ -342,7 +342,7 @@
                                                         Message:
                                                     </td>
                                                     <td>
-                                                        <xsl:value-of select="message"/>
+                                                        <xsl:value-of select="ili:message"/>
                                                     </td>
                                                 </tr>
                                             </xsl:if>
@@ -371,207 +371,9 @@
 
                     <!-- <xsl:message>Hallo</xsl:message> -->
                 </xsl:for-each-group>
-<!--
-                <h2>Beschreibung</h2>
-                <p>
-                    <xsl:value-of disable-output-escaping="yes" select="shortDescription"/>
-                    <xsl:if test="furtherInformation">
-                        <br/><br/>
-                        Weiterführende Informationen: 
-                        <xsl:element name="a">
-                            <xsl:attribute name="target">
-                                <xsl:text>_blank</xsl:text>
-                            </xsl:attribute>
-                            <xsl:attribute name="href"><xsl:value-of select="furtherInformation"/></xsl:attribute>
-                            <xsl:value-of select="furtherInformation"/>
-                        </xsl:element>
-                    </xsl:if>
-
-                </p>
-
-                <h2>Datum der letzten Publikation</h2>
-                <p>
-                    <xsl:value-of select="format-date(lastPublishingDate,'[D01]. [MNn] [Y0001]')"/>
-                </p>
-
-                <h2>Datenmodell</h2>
-                <p>
-                    <xsl:element name="a">
-                        <xsl:attribute name="target">
-                            <xsl:text>_blank</xsl:text>
-                        </xsl:attribute>
-                        <xsl:attribute name="href">https://geo.so.ch/modelfinder/?expanded=true&amp;query=<xsl:value-of select="model"/></xsl:attribute>
-                        <xsl:value-of select="model"/>
-                    </xsl:element>
-                </p>
-
-                <h2>Kontakt (fachlich)</h2>
-                <p>
-                    <xsl:value-of select="owner/agencyName"/><br/>
-                    <xsl:if test="owner/division">
-                        <xsl:value-of select="owner/division"/><br/>
-                    </xsl:if>
-                    Telefon <xsl:value-of select="owner/phone"/><br/>
-                    <xsl:element name="a">
-                        <xsl:attribute name="href"><xsl:value-of select="owner/email"/></xsl:attribute><xsl:value-of select="substring(owner/email, 8)"/>
-                    </xsl:element><br/>
-                    <xsl:element name="a">
-                        <xsl:attribute name="target">
-                            <xsl:text>_blank</xsl:text>
-                        </xsl:attribute>
-                        <xsl:attribute name="href"><xsl:value-of select="owner/officeAtWeb"/></xsl:attribute>
-                        <xsl:value-of select="substring(owner/officeAtWeb, 9)"/>
-                    </xsl:element>
-                </p>
-
-                <h2>Kontakt (technisch)</h2>
-                <p>
-                    <xsl:value-of select="servicer/agencyName"/><br/>
-                    Telefon <xsl:value-of select="servicer/phone"/><br/>
-                    <xsl:element name="a">
-                        <xsl:attribute name="href"><xsl:value-of select="servicer/email"/></xsl:attribute><xsl:value-of select="substring(servicer/email, 8)"/>
-                    </xsl:element><br/>
-                    <xsl:element name="a">
-                        <xsl:attribute name="target">
-                            <xsl:text>_blank</xsl:text>
-                        </xsl:attribute>
-                        <xsl:attribute name="href"><xsl:value-of select="servicer/officeAtWeb"/></xsl:attribute>
-                        <xsl:value-of select="substring(servicer/officeAtWeb, 9)"/>
-                    </xsl:element>
-                </p>
-
-                <h2>Dienste</h2>
-                <p class="datenebene">
-                    <xsl:if test="services">
-                        Tabellen dieses Themas sind in folgenden Diensten als Karten- oder Datenlayer publiziert:
-
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Karten-/Datenlayer</th>
-                                    <th><a href="https://geo.so.ch/api/wms?SERVICE=WMS&amp;REQUEST=GetCapabilities&amp;VERSION=1.3.0" target="_blank">WMS</a></th>
-                                    <th><a href="https://geo.so.ch/api/wfs?SERVICE=WFS&amp;VERSION=1.0.0&amp;REQUEST=GetCapabilities" target="_blank">WFS</a></th>
-                                    <th><a href="https://geo.so.ch/api/data/v1/api/" target="_blank">Dataservice</a></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <xsl:for-each-group select="services/service" group-by="layers/layer/identifier">
-                                    <xsl:sort select="current-grouping-key()" data-type="text" order="ascending"/>
-                                    <tr>
-                                        <td><xsl:value-of select="current-grouping-key()"/></td>
-
-                                        <xsl:comment>https://icons.getbootstrap.com/</xsl:comment>
-                                        <td>
-                                            <xsl:choose>
-                                                <xsl:when test="current-group()[type='WMS']">
-                                                    <xsl:variable name="wgcUrl">https://geo.so.ch/map?l=<xsl:value-of select="current-grouping-key()"/></xsl:variable> 
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-                                                        <a class="black-link" href="{$wgcUrl}" target="_blank">
-                                                            <rect width="16" height="16" style="fill:white;stroke:none" />
-                                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                                        </a>
-                                                    </svg>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                                    </svg>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </td>
-                                        <td>
-                                            <xsl:choose>
-                                                <xsl:when test="current-group()[type='WFS']">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
-                                                    </svg>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                                    </svg>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </td>
-                                        <td>
-                                            <xsl:choose>
-                                                <xsl:when test="current-group()[type='Dataservice']">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
-                                                    </svg>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                                                    </svg>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </td>
-                                    </tr>
-                                </xsl:for-each-group>
-                            </tbody>
-                        </table>
-
-                        Geobasidaten nach Bundesrecht werden ebenfalls auf <a href="https://geodienste.ch">geodienste.ch</a> publiziert.
-                    </xsl:if>
-                </p>
-
-                <h2>Inhalt</h2>
-
-                <xsl:apply-templates select="tablesInfo/tableInfo" /> 
--->
             </div>
         </body>
         </html>
-    </xsl:template>
-
-    <xsl:template match="tableInfo">
-
-        <h3><xsl:value-of select="sqlName"/></h3>
-
-        <p class="datenebene"><xsl:value-of disable-output-escaping="yes" select="shortDescription"/></p>
-
-            <table>
-                <tr style="border-bottom: 1px solid #eee;">
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Beschreibung
-                    </th>
-                    <th>
-                        Datentyp
-                    </th>
-                    <th>
-                        Pflichtattribut
-                    </th>
-                </tr>
-
-                <xsl:for-each select="attributesInfo/attributeInfo">
-                    <tr>
-                        <td>
-                            <xsl:value-of select="name"/>
-                        </td>
-                        <td>
-                            <xsl:value-of disable-output-escaping="yes" select="shortDescription"/>
-                        </td>
-                        <td>
-                            <xsl:value-of select="datatype"/>
-                        </td>
-                        <td>
-                            <xsl:if test="mandatory='true'">
-                                <xsl:text>ja</xsl:text>
-                            </xsl:if>
-                            <xsl:if test="mandatory='false'">
-                                <xsl:text>nein</xsl:text>
-                            </xsl:if>
-                        </td>
-                    </tr>
-                </xsl:for-each>
-            </table>
-
     </xsl:template>
 
 </xsl:stylesheet>

@@ -192,6 +192,7 @@ public class Result implements Serializable {
             checkIomStruct.setattrvalue("className", result.className);
             checkIomStruct.setattrvalue("description", result.description);
             checkIomStruct.setattrvalue("success", Boolean.valueOf(result.success).toString());
+            if (result.message != null) checkIomStruct.setattrvalue("message", result.message);
             if (result.statusCode != null) checkIomStruct.setattrvalue("statusCode", String.valueOf(result.statusCode));
             checkIomStruct.setattrvalue("startTime", result.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
             checkIomStruct.setattrvalue("endTime", result.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
