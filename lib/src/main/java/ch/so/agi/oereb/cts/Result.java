@@ -176,14 +176,18 @@ public class Result implements Serializable {
     
     
     public IomObject toIomObject() {
-        Iom_jObject iomObj = new Iom_jObject(TAG_PROBE_RESULT, this.identifier + "." + this.className);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd'T'HH:mm:ss.SSS");
+        // Der gleiche Request erhält immer die gleiche TID pro Identifier. Zusätzlich wird die lesbare
+        // Probe hinzugefügt.
+        UUID uuid = UUID.nameUUIDFromBytes(this.request.toString().getBytes());
+        Iom_jObject iomObj = new Iom_jObject(TAG_PROBE_RESULT, this.identifier + "." + this.className + "." + uuid);
         iomObj.setattrvalue("identifier", this.identifier);
         iomObj.setattrvalue("className", this.className);
         iomObj.setattrvalue("success", Boolean.valueOf(this.success).toString());
         iomObj.setattrvalue("serviceEndpoint", this.serviceEndpoint.toString());
         iomObj.setattrvalue("request", this.request.toString());
-        iomObj.setattrvalue("startTime", this.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
-        iomObj.setattrvalue("endTime", this.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
+        iomObj.setattrvalue("startTime", this.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
+        iomObj.setattrvalue("endTime", this.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
         iomObj.setattrvalue("processingTimeSecs", String.valueOf(this.processingTimeSecs));
         iomObj.setattrvalue("resultFileLocation", this.resultFileLocation);
         
@@ -194,8 +198,8 @@ public class Result implements Serializable {
             checkIomStruct.setattrvalue("success", Boolean.valueOf(result.success).toString());
             if (result.message != null) checkIomStruct.setattrvalue("message", result.message);
             if (result.statusCode != null) checkIomStruct.setattrvalue("statusCode", String.valueOf(result.statusCode));
-            checkIomStruct.setattrvalue("startTime", result.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
-            checkIomStruct.setattrvalue("endTime", result.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
+            checkIomStruct.setattrvalue("startTime", result.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
+            checkIomStruct.setattrvalue("endTime", result.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
             checkIomStruct.setattrvalue("processingTimeSecs", String.valueOf(result.processingTimeSecs));            
             iomObj.addattrobj("checkResults", checkIomStruct);
         }
