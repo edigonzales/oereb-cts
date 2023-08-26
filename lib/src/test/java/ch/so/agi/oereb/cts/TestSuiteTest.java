@@ -44,7 +44,7 @@ public class TestSuiteTest {
         String content = Files.readString(logFile);
         
         System.out.println(content);        
-        assertTrue(content.contains("TID=\"SO.ch.so.agi.oereb.cts.GetCapabilitiesProbe\""));
+        assertTrue(content.contains("TID=\"SO.ch.so.agi.oereb.cts.GetCapabilitiesProbe."));
         assertTrue(content.contains("<statusCode>200</statusCode>"));        
     }
 
