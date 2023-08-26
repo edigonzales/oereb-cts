@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +39,10 @@ public class TestSuiteTest {
         // Run test
         Settings settings = new Settings();
         settings.setValue(TestSuite.SETTING_LOGFILE, logFile.toFile().getAbsolutePath());
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd'T'HH:mm:ss");
+        String testSuiteTime = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf);
+        settings.setValue(TestSuite.SETTING_TESTSUITE_TIME, testSuiteTime);
         
         TestSuite testSuite = new TestSuite();
         testSuite.run(params, settings);

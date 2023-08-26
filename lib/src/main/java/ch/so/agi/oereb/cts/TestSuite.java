@@ -7,6 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +36,15 @@ public class TestSuite {
     private static final String MODEL_NAME = "SO_AGI_OEREB_CTS_20230819";
     private static final String ILI_TOPIC = MODEL_NAME + ".Results";
             
-    public List<Result> run(Map<String,String> params, Settings settings) {                
+    public List<Result> run(Map<String,String> params, Settings settings) { 
+        String testSuiteTime = settings.getValue(TestSuite.SETTING_TESTSUITE_TIME);
+        // TODO: Will ich das wirklich? Dann funktioniert ja genau die Query nicht mehr später, weil
+        // unterschiedliche Zeiten.
+//        if (testSuiteTime == null) {
+//            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd'T'HH:mm:ss");
+//            testSuiteTime = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf);
+//        }
+        
         List<Result> results = new ArrayList<>();
         
         String serviceEndpoint = params.get(PARAM_SERVICE_ENDPOINT);
@@ -45,6 +56,7 @@ public class TestSuite {
             // Capabilities-Prüfungen
             GetCapabilitiesMethod method = new GetCapabilitiesMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
+            setTestSuitTime(probeResults, testSuiteTime);
             results.addAll(probeResults);
         }
 
@@ -53,6 +65,7 @@ public class TestSuite {
             // Versions-Prüfungen
             GetVersionsMethod method = new GetVersionsMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
+            setTestSuitTime(probeResults, testSuiteTime);
             results.addAll(probeResults);
         }
 
@@ -61,6 +74,7 @@ public class TestSuite {
             // GetEGRID-Prüfungen
             GetEGRIDMethod method = new GetEGRIDMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
+            setTestSuitTime(probeResults, testSuiteTime);
             results.addAll(probeResults);
         }
         
@@ -69,6 +83,7 @@ public class TestSuite {
             // Extract-Prüfungen
             GetExtractByIdMethod method = new GetExtractByIdMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
+            setTestSuitTime(probeResults, testSuiteTime);
             results.addAll(probeResults);
         }            
         
@@ -100,6 +115,12 @@ public class TestSuite {
         return results;
     }
     
+    private void setTestSuitTime(List<Result> results, String testSuiteTime) {
+        for (Result result : results) {
+            result.setTestSuiteTime(testSuiteTime);
+        }
+    }
+    
     private File copyResourceToTmpDir(String resource) throws IOException {
         Path exportedFile = null;
         InputStream is = TestSuite.class.getClassLoader().getResourceAsStream(resource);
@@ -123,6 +144,7 @@ public class TestSuite {
     }
 
     public static final String SETTING_LOGFILE = "ch.so.agi.oereb.cts.log";
+    public static final String SETTING_TESTSUITE_TIME = "ch.so.agi.oereb.cts.time";
     public static final String PARAM_IDENTIFIER = "identifier";
     public static final String PARAM_SERVICE_ENDPOINT = "SERVICE_ENDPOINT";
     public static final String PARAM_EN = "EN";

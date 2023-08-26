@@ -8,6 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +42,9 @@ public class Validator {
             
     public void run(String config, String outDirectory) throws InvalidFileFormatException, IOException, XMLStreamException, SaxonApiException {
         List<String> logFiles = new ArrayList<>();
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd'T'HH:mm:ss");
+        String testSuiteTime = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf);
 
         File configFile = new File(config);
         Ini ini = new Ini(configFile);
@@ -80,6 +86,8 @@ public class Validator {
             String logFile = Paths.get(outDirectory, "cts-" + params.get(TestSuite.PARAM_IDENTIFIER) + ".xtf").toFile().getAbsolutePath();
             settings.setValue(TestSuite.SETTING_LOGFILE, logFile);
             
+            settings.setValue(TestSuite.SETTING_TESTSUITE_TIME, testSuiteTime);
+
             TestSuite testSuite = new TestSuite();
             testSuite.run(params, settings);
 

@@ -37,6 +37,8 @@ public class Result implements Serializable {
     
     protected Integer statusCode;
     
+    protected String testSuiteTime;
+    
     protected Instant startTime;
 
     protected Instant endTime;
@@ -115,6 +117,14 @@ public class Result implements Serializable {
         this.statusCode = statusCode;
     }
     
+    public String getTestSuiteTime() {
+        return testSuiteTime;
+    }
+
+    public void setTestSuiteTime(String testSuiteTime) {
+        this.testSuiteTime = testSuiteTime;
+    }
+
     public Instant getStartTime() {
         return startTime;
     }
@@ -186,6 +196,7 @@ public class Result implements Serializable {
         iomObj.setattrvalue("success", Boolean.valueOf(this.success).toString());
         iomObj.setattrvalue("serviceEndpoint", this.serviceEndpoint.toString());
         iomObj.setattrvalue("request", this.request.toString());
+        iomObj.setattrvalue("testSuiteTime", this.testSuiteTime);
         iomObj.setattrvalue("startTime", this.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
         iomObj.setattrvalue("endTime", this.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
         iomObj.setattrvalue("processingTimeSecs", String.valueOf(this.processingTimeSecs));

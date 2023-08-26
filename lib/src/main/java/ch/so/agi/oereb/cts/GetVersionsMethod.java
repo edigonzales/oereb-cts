@@ -28,7 +28,7 @@ public class GetVersionsMethod {
             GetVersionsProbe probe = new GetVersionsProbe();
             Result probeResult = probe.run(requestUrl);
             probeResult.setIdentifier(parameters.get("identifier"));
-
+            
             resultList.add(probeResult);
         } catch (UnsupportedEncodingException e) {
             // TODO result...
