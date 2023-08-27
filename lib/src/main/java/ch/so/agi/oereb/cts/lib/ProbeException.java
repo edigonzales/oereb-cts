@@ -1,4 +1,4 @@
-package ch.so.agi.oereb.cts;
+package ch.so.agi.oereb.cts.lib;
 
 public class ProbeException extends Exception {
     public ProbeException(String errorMessage) {

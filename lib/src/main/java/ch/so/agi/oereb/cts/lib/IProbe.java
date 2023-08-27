@@ -1,4 +1,4 @@
-package ch.so.agi.oereb.cts;
+package ch.so.agi.oereb.cts.lib;
 
 import java.io.IOException;
 import java.net.URI;
