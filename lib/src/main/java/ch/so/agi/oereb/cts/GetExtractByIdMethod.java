@@ -56,6 +56,8 @@ public class GetExtractByIdMethod {
                         continue;
                     }
 
+                    log.debug("request url: {}", requestUrl);
+                    
                     GetExtractByIdProbe probe = new GetExtractByIdProbe();
                     Result probeResult = probe.run(requestUrl);
                     probeResult.setIdentifier(parameters.get("identifier"));

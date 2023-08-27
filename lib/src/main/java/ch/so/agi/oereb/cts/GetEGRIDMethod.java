@@ -49,6 +49,8 @@ public class GetEGRIDMethod {
                 for (String queryParameter : queryParameters) { 
                     URI requestUrl = URI.create(requestUrlString + queryParameter);
 
+                    log.debug("request url: {}", requestUrl);
+
                     GetEGRIDProbe probe = new GetEGRIDProbe();
                     Result probeResult = probe.run(requestUrl);
                     probeResult.setIdentifier(parameters.get("identifier"));

@@ -25,6 +25,8 @@ public class GetCapabilitiesMethod {
             
             URI requestUrl = URI.create(requestUrlString);
             
+            log.debug("request url: {}", requestUrl);
+
             GetCapabilitiesProbe probe = new GetCapabilitiesProbe();
             Result probeResult = probe.run(requestUrl);
             probeResult.setIdentifier(parameters.get("identifier"));

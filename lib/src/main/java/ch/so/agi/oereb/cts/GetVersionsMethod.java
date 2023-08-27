@@ -25,6 +25,8 @@ public class GetVersionsMethod {
             
             URI requestUrl = URI.create(requestUrlString);
             
+            log.debug("request url: {}", requestUrl);
+
             GetVersionsProbe probe = new GetVersionsProbe();
             Result probeResult = probe.run(requestUrl);
             probeResult.setIdentifier(parameters.get("identifier"));
