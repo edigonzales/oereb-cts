@@ -80,7 +80,7 @@ public class Validator {
                 throw new IllegalArgumentException("No test parameters defined.");
             }
 
-            log.info("Validating service endpoint: " + serviceEndpoint + " ("+sectionMap.getKey()+")");
+            //log.info("Validating service endpoint: " + serviceEndpoint + " ("+sectionMap.getKey()+")");
               
             Settings settings = new Settings();
             String logFile = Paths.get(outDirectory, "cts-" + params.get(TestSuite.PARAM_IDENTIFIER) + ".xtf").toFile().getAbsolutePath();

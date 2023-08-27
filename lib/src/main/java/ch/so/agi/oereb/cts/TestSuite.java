@@ -49,10 +49,10 @@ public class TestSuite {
         
         String serviceEndpoint = params.get(PARAM_SERVICE_ENDPOINT);
 
-        log.info("Validating service endpoint: " + serviceEndpoint + " ("+params.get(PARAM_IDENTIFIER)+")");
+        log.info("Service endpoint: " + serviceEndpoint + " ("+params.get(PARAM_IDENTIFIER)+")");
 
         {
-            log.debug("validating capabilities");
+            log.debug("Validating capabilities method.");
             // Capabilities-Prüfungen
             GetCapabilitiesMethod method = new GetCapabilitiesMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
@@ -61,7 +61,7 @@ public class TestSuite {
         }
 
         {
-            log.debug("validating versions");
+            log.debug("Validating versions method.");
             // Versions-Prüfungen
             GetVersionsMethod method = new GetVersionsMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
@@ -70,7 +70,7 @@ public class TestSuite {
         }
 
         {
-            log.debug("validating getegrid");
+            log.debug("Validating getegrid method.");
             // GetEGRID-Prüfungen
             GetEGRIDMethod method = new GetEGRIDMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
@@ -79,7 +79,7 @@ public class TestSuite {
         }
         
         {
-            log.debug("validating extract");
+            log.debug("Validating extract method.");
             // Extract-Prüfungen
             GetExtractByIdMethod method = new GetExtractByIdMethod();
             List<Result> probeResults = method.run(serviceEndpoint, params);
