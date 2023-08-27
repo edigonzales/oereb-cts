@@ -198,7 +198,7 @@ public class Result implements Serializable {
         iomObj.setattrvalue("request", this.request.toString());
         iomObj.setattrvalue("testSuiteTime", this.testSuiteTime);
         iomObj.setattrvalue("startTime", this.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
-        iomObj.setattrvalue("endTime", this.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
+        if (this.endTime != null) iomObj.setattrvalue("endTime", this.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
         iomObj.setattrvalue("processingTimeSecs", String.valueOf(this.processingTimeSecs));
         iomObj.setattrvalue("resultFileLocation", this.resultFileLocation);
         
