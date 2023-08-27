@@ -14,9 +14,9 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.so.agi.oereb.cts.lib.GetExtractByIdMethod;
-import ch.so.agi.oereb.cts.lib.GetExtractByIdProbe;
-import ch.so.agi.oereb.cts.lib.Result;
+import ch.so.agi.oereb.cts.GetExtractByIdMethod;
+import ch.so.agi.oereb.cts.GetExtractByIdProbe;
+import ch.so.agi.oereb.cts.Result;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okio.Buffer;

@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ehi.basics.settings.Settings;
-import ch.so.agi.oereb.cts.lib.TestSuite;
+import ch.so.agi.oereb.cts.TestSuite;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.Serializer;

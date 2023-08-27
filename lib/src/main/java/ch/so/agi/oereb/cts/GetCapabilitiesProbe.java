@@ -1,4 +1,4 @@
-package ch.so.agi.oereb.cts.lib;
+package ch.so.agi.oereb.cts;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GetVersionsProbe extends Probe implements IProbe {
-    final Logger log = LoggerFactory.getLogger(GetVersionsProbe.class);
+public class GetCapabilitiesProbe extends Probe implements IProbe {
+    final Logger log = LoggerFactory.getLogger(GetCapabilitiesProbe.class);
 
     @Override
     public Result run(URI requestUrl) throws IOException {
@@ -24,7 +24,7 @@ public class GetVersionsProbe extends Probe implements IProbe {
         
         // Wenn man probeResult als Parameter übergibt, kann man den ServiceEnpoint ausserhalb bereits
         // setzen.
-        int idx = requestUrl.toString().indexOf("versions");
+        int idx = requestUrl.toString().indexOf("capabilities");
         String serviceEndpoint = requestUrl.toString().substring(0, idx);
         probeResult.setServiceEndpoint(URI.create(serviceEndpoint));
 
@@ -47,16 +47,9 @@ public class GetVersionsProbe extends Probe implements IProbe {
                 Result result = check.run(response);
                 probeResult.addResult(result);
             }
-            {
-                VersionsCheck check = new VersionsCheck();
-                Result result = check.run(response);
-                probeResult.addResult(result);
-            }
-
         } catch (InterruptedException e) { // TODO!!!
             e.printStackTrace();
         } 
         return probeResult;
     }
-
 }

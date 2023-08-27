@@ -1,4 +1,4 @@
-package ch.so.agi.oereb.cts.lib;
+package ch.so.agi.oereb.cts;
 
 public class Utils {
     // Entfernt doppelte Slashes

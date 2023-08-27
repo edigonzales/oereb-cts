@@ -13,7 +13,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.so.agi.oereb.cts.lib.GetCapabilitiesProbe;
+import ch.so.agi.oereb.cts.GetCapabilitiesProbe;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 

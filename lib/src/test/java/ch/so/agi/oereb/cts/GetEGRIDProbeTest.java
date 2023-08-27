@@ -11,8 +11,8 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ch.so.agi.oereb.cts.lib.GetEGRIDProbe;
-import ch.so.agi.oereb.cts.lib.Result;
+import ch.so.agi.oereb.cts.GetEGRIDProbe;
+import ch.so.agi.oereb.cts.Result;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 

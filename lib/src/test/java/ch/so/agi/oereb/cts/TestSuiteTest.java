@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ehi.basics.settings.Settings;
-import ch.so.agi.oereb.cts.lib.TestSuite;
+import ch.so.agi.oereb.cts.TestSuite;
 
 @Tag("external")
 public class TestSuiteTest {
