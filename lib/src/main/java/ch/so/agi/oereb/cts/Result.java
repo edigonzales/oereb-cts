@@ -43,7 +43,7 @@ public class Result implements Serializable {
 
     protected Instant endTime;
 
-    protected double processingTimeSecs = -1;
+    protected Double processingTimeSecs;
     
     protected String resultFileLocation;
 
@@ -199,7 +199,7 @@ public class Result implements Serializable {
         iomObj.setattrvalue("testSuiteTime", this.testSuiteTime);
         iomObj.setattrvalue("startTime", this.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
         if (this.endTime != null) iomObj.setattrvalue("endTime", this.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
-        iomObj.setattrvalue("processingTimeSecs", String.valueOf(this.processingTimeSecs));
+        if (this.processingTimeSecs != null) iomObj.setattrvalue("processingTimeSecs", String.valueOf(this.processingTimeSecs));
         iomObj.setattrvalue("resultFileLocation", this.resultFileLocation);
         
         for (Result result : this.results) {
