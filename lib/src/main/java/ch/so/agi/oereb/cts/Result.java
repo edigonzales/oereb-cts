@@ -211,7 +211,7 @@ public class Result implements Serializable {
             if (result.statusCode != null) checkIomStruct.setattrvalue("statusCode", String.valueOf(result.statusCode));
             checkIomStruct.setattrvalue("startTime", result.startTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
             if (result.endTime != null) checkIomStruct.setattrvalue("endTime", result.endTime.atZone(ZoneId.systemDefault()).toLocalDateTime().format(dtf));
-            checkIomStruct.setattrvalue("processingTimeSecs", String.valueOf(result.processingTimeSecs));            
+            if (result.processingTimeSecs != null) checkIomStruct.setattrvalue("processingTimeSecs", String.valueOf(result.processingTimeSecs));            
             iomObj.addattrobj("checkResults", checkIomStruct);
         }
         
