@@ -52,7 +52,12 @@ public class EmbeddedImagesCheck extends Check implements ICheck {
             
             {
                 try {
-                    int count = countNodes(response, "count(//data:"+logo+"Ref/text())");
+                    int countLogos = countNodes(response, "count(//data:"+logo+"Ref/text())");
+                    
+                    // NEIN nicht in forschleife der logoList. Separat?
+                    int countWMS = countNodes(response, "count(//data:ReferenceWMS)");
+                    System.out.println("**********"+countWMS);
+
 
                     if (requestUrl.contains("WITHIMAGES=true")) {
                         // Glaube diese Bedingung gilt nicht.
@@ -61,7 +66,7 @@ public class EmbeddedImagesCheck extends Check implements ICheck {
 //                            result.setMessage("Response has a superfluos "+logo+"Ref element.");
 //                        }
                     } else if (requestUrl.contains("WITHIMAGES=false") || !requestUrl.contains("WITHIMAGES")) {
-                        if (count == 0) {
+                        if (countLogos == 0) {
                             result.setSuccess(false);
                             result.setMessage("Response misses "+logo+"Ref element.");
                         }

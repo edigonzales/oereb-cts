@@ -151,6 +151,41 @@ public class GetExtractByIdProbeTest {
             }
         } 
     }
+    
+    @Test
+    public void extract_xml_missing_referencewms_fail() throws IOException {
+        // Prepare 
+        var xmlFile = Paths.get("src/test/data/extract_missing_referencewms.xml").toFile();
+       
+        var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/xml")
+                .setResponseCode(200)
+                .setBody(fileToBytes(xmlFile));
+
+        mockWebServer.enqueue(mockResponse);
+        
+        var request = "/extract/xml/?EGRID=CH633477059266";
+        mockWebServer.url(request);
+        
+        var serviceEndpoint = URI.create(mockWebServer.getHostName() + ":" + mockWebServer.getPort());
+        var requestUrl = URI.create("http://" + serviceEndpoint + request);
+                
+        // Run test
+        var probe = new GetExtractByIdProbe();
+        var result = probe.run(requestUrl);
+        
+        System.out.println(result);
+        
+        // Validate
+//        assertFalse(result.isSuccess());
+//        for (Result res : result.getResults()) {
+//            if (res.getClassName().equalsIgnoreCase("ch.so.agi.oereb.cts.ResponseContentTypeCheck")) {
+//                assertFalse(res.isSuccess());
+//                break;
+//            }
+//        } 
+    }
+
 
     private Buffer fileToBytes(File file) throws IOException {
         Buffer result = new Buffer();
