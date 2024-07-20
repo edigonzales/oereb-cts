@@ -25,6 +25,7 @@ public class CoordSystemCheck extends Check implements ICheck {
         result.setDescription(this.description);
         result.start();
 
+        System.out.println("dummy");
         String expression = "count(//geom:coord[./geom:c1 < 2400000 or ./geom:c1 > 2900000 or ./geom:c2 < 1070000 or ./geom:c2 > 1300000])";
 
         try {
